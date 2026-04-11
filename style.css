@@ -40,12 +40,21 @@ button {
 
 /* HEADER */
 .site-header {
-  background: rgba(255, 255, 255, 0.96);
-  border-bottom: 1px solid #e5e7eb;
   position: sticky;
   top: 0;
   z-index: 1000;
-  backdrop-filter: blur(8px);
+
+  background:
+    radial-gradient(circle at left, rgba(47,125,50,0.12), transparent 35%),
+    radial-gradient(circle at right, rgba(120,180,90,0.08), transparent 30%),
+    #ffffff;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.site-header {
+  border-bottom: 1px solid #dfe5df;
+  box-shadow: 0 2px 6px rgba(47, 125, 50, 0.06);
 }
 
 .header-inner {
