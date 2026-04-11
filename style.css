@@ -58,12 +58,22 @@ button {
 .logo-link {
   display: inline-flex;
   align-items: center;
+  gap: 12px;
 }
 
-.logo-text {
-  font-size: 24px;
+.logo-image {
+  height: 54px;
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+  display: block;
+}
+
+.logo-title {
+  font-size: 22px;
   font-weight: 800;
   color: #1f2937;
+  line-height: 1.1;
 }
 
 .main-nav {
@@ -108,23 +118,28 @@ button {
 
 /* HERO */
 .hero {
-  background: #ffffff;
+  background:
+    radial-gradient(circle at top left, rgba(47, 125, 50, 0.10), transparent 35%),
+    radial-gradient(circle at top right, rgba(120, 180, 90, 0.08), transparent 30%),
+    linear-gradient(180deg, #ffffff 0%, #f5faf4 100%);
   border-bottom: 1px solid #e5e7eb;
 }
 
 .hero .container {
   text-align: center;
-  padding-top: 40px;
-  padding-bottom: 22px;
+  padding-top: 48px;
+  padding-bottom: 30px;
 }
 
 .hero h1 {
-  font-size: 32px;
-  margin-bottom: 8px;
+  font-size: 34px;
+  margin-bottom: 10px;
+  color: #1f2937;
 }
 
 .hero p {
-  color: #6b7280;
+  color: #4b5563;
+  font-size: 16px;
 }
 
 /* FILTERS */
@@ -408,9 +423,13 @@ button {
     font-size: 24px;
   }
 
-  .logo-text {
-    font-size: 20px;
-  }
+  .logo-image {
+  height: 42px;
+}
+
+.logo-title {
+  font-size: 18px;
+}
 
   .filters {
     justify-content: flex-start;
