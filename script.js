@@ -82,7 +82,7 @@ function renderCatalog() {
           </div>
 
           ${p.size ? `<div class="size">${p.size}</div>` : ""}
-          ${p.price ? `<div class="price">${p.price} ₽</div>` : ""}
+          ${p.price ? `<div class="price">${p.price} Br</div>` : ""}
           ${p.description ? `<div class="description">${p.description}</div>` : ""}
 
           <div class="button">Подробнее</div>
