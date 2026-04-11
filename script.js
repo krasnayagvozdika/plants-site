@@ -4,6 +4,8 @@ const catalog = document.getElementById("catalog");
 const filters = document.getElementById("filters");
 const modal = document.getElementById("modal");
 const modalBody = document.getElementById("modal-body");
+const modalContent = modal?.querySelector(".modal-content") || null;
+const modalCloseButton = modal?.querySelector(".modal-close") || null;
 
 const menuToggle = document.getElementById("menu-toggle");
 const mainNav = document.getElementById("main-nav");
@@ -14,6 +16,7 @@ const homeImage3 = document.getElementById("home-image-3");
 
 let plants = [];
 let currentCategory = "Все";
+let lastFocusedElement = null;
 
 /* mobile menu */
 if (menuToggle && mainNav) {
@@ -51,11 +54,9 @@ async function loadData() {
   try {
     const res = await fetch(URL);
     const text = await res.text();
-
-    const rows = text.trim().split("\n").slice(1);
+    const rows = parseCsv(text).slice(1);
 
     plants = rows
-      .map(parseCsvRow)
       .filter((cols) => cols.length >= 5)
       .map((cols) => ({
         id: cleanValue(cols[0]),
@@ -84,11 +85,9 @@ async function loadHomeImages() {
   try {
     const res = await fetch(URL);
     const text = await res.text();
-
-    const rows = text.trim().split("\n").slice(1);
+    const rows = parseCsv(text).slice(1);
 
     const homePlants = rows
-      .map(parseCsvRow)
       .filter((cols) => cols.length >= 5)
       .map((cols) => ({
         id: cleanValue(cols[0]),
@@ -144,32 +143,59 @@ function setHomeCard(imageElement, plant) {
   };
 }
 
-function parseCsvRow(row) {
-  const result = [];
-  let current = "";
+function parseCsv(text = "") {
+  const rows = [];
+  let currentRow = [];
+  let currentCell = "";
   let insideQuotes = false;
 
-  for (let i = 0; i < row.length; i++) {
-    const char = row[i];
-    const nextChar = row[i + 1];
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    const nextChar = text[i + 1];
 
     if (char === '"') {
       if (insideQuotes && nextChar === '"') {
-        current += '"';
+        currentCell += '"';
         i++;
       } else {
         insideQuotes = !insideQuotes;
       }
-    } else if (char === "," && !insideQuotes) {
-      result.push(current);
-      current = "";
-    } else {
-      current += char;
+      continue;
+    }
+
+    if (char === "," && !insideQuotes) {
+      currentRow.push(currentCell);
+      currentCell = "";
+      continue;
+    }
+
+    if ((char === "\n" || char === "\r") && !insideQuotes) {
+      if (char === "\r" && nextChar === "\n") {
+        i++;
+      }
+
+      currentRow.push(currentCell);
+
+      if (currentRow.some((value) => value.trim() !== "")) {
+        rows.push(currentRow);
+      }
+
+      currentRow = [];
+      currentCell = "";
+      continue;
+    }
+
+    currentCell += char;
+  }
+
+  if (currentCell || currentRow.length > 0) {
+    currentRow.push(currentCell);
+    if (currentRow.some((value) => value.trim() !== "")) {
+      rows.push(currentRow);
     }
   }
 
-  result.push(current);
-  return result;
+  return rows;
 }
 
 function cleanValue(value = "") {
@@ -219,7 +245,13 @@ function renderCatalog() {
       const typeLabel = getTypeLabel(p.type);
 
       return `
-        <article class="card" data-id="${escapeHtml(p.id)}">
+        <article
+          class="card"
+          data-id="${escapeHtml(p.id)}"
+          role="button"
+          tabindex="0"
+          aria-label="Открыть карточку растения ${escapeHtml(p.name)}"
+        >
           <img src="images/${escapeHtml(p.image)}" alt="${escapeHtml(p.name)}" loading="lazy">
           <div class="card-content">
             <h3>${escapeHtml(p.name)}</h3>
@@ -233,6 +265,14 @@ function renderCatalog() {
 
   document.querySelectorAll(".card").forEach((card) => {
     card.addEventListener("click", () => {
+      const plant = plants.find((p) => p.id === card.dataset.id);
+      if (plant) openCard(plant);
+    });
+
+    card.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+
+      event.preventDefault();
       const plant = plants.find((p) => p.id === card.dataset.id);
       if (plant) openCard(plant);
     });
@@ -250,10 +290,11 @@ function openCard(p) {
   if (!modal || !modalBody) return;
 
   const typeLabel = getTypeLabel(p.type);
+  lastFocusedElement = document.activeElement;
 
   modalBody.innerHTML = `
     <img class="modal-image" src="images/${escapeHtml(p.image)}" alt="${escapeHtml(p.name)}">
-    <h2 class="modal-title">${escapeHtml(p.name)}</h2>
+    <h2 class="modal-title" id="modal-title">${escapeHtml(p.name)}</h2>
     <div class="modal-meta">${escapeHtml(p.category)} · ${escapeHtml(typeLabel)}</div>
     ${p.price ? `<div class="modal-price">${escapeHtml(p.price)} Br</div>` : `<div class="modal-price">Цена по запросу</div>`}
     ${p.size ? `<div class="modal-size">Размер: ${escapeHtml(p.size)}</div>` : ""}
@@ -263,6 +304,7 @@ function openCard(p) {
   modal.classList.add("open");
   modal.setAttribute("aria-hidden", "false");
   document.body.style.overflow = "hidden";
+  modalCloseButton?.focus();
 }
 
 function closeModal() {
@@ -270,6 +312,10 @@ function closeModal() {
   modal.classList.remove("open");
   modal.setAttribute("aria-hidden", "true");
   document.body.style.overflow = "";
+
+  if (lastFocusedElement instanceof HTMLElement) {
+    lastFocusedElement.focus();
+  }
 }
 
 function escapeHtml(str = "") {
@@ -289,8 +335,41 @@ if (modal) {
   });
 }
 
+if (modalCloseButton) {
+  modalCloseButton.addEventListener("click", closeModal);
+}
+
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
     closeModal();
   }
+
+  if (e.key === "Tab" && modal?.classList.contains("open")) {
+    trapFocus(e);
+  }
 });
+
+function trapFocus(event) {
+  if (!modal) return;
+
+  const focusableElements = modal.querySelectorAll(
+    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+  );
+
+  if (focusableElements.length === 0) {
+    modalContent?.focus();
+    event.preventDefault();
+    return;
+  }
+
+  const firstElement = focusableElements[0];
+  const lastElement = focusableElements[focusableElements.length - 1];
+
+  if (event.shiftKey && document.activeElement === firstElement) {
+    lastElement.focus();
+    event.preventDefault();
+  } else if (!event.shiftKey && document.activeElement === lastElement) {
+    firstElement.focus();
+    event.preventDefault();
+  }
+}

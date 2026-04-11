@@ -95,6 +95,16 @@ button {
   background: rgba(47, 125, 50, 0.08);
 }
 
+.nav-link:focus-visible,
+.menu-toggle:focus-visible,
+.btn:focus-visible,
+.filters button:focus-visible,
+.modal-close:focus-visible,
+.card:focus-visible {
+  outline: 3px solid rgba(47, 125, 50, 0.35);
+  outline-offset: 3px;
+}
+
 /* BURGER */
 .menu-toggle {
   display: none;
@@ -364,6 +374,10 @@ button {
   transform: translateY(-7px);
   box-shadow: 0 16px 30px rgba(0, 0, 0, 0.12);
   border-color: rgba(47, 125, 50, 0.14);
+}
+
+.card:focus-visible {
+  border-color: rgba(47, 125, 50, 0.32);
 }
 
 .card img {
