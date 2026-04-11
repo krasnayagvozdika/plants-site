@@ -12,9 +12,6 @@ const homeImage1 = document.getElementById("home-image-1");
 const homeImage2 = document.getElementById("home-image-2");
 const homeImage3 = document.getElementById("home-image-3");
 
-const homeCaption1 = document.getElementById("home-caption-1");
-const homeCaption2 = document.getElementById("home-caption-2");
-const homeCaption3 = document.getElementById("home-caption-3");
 
 let plants = [];
 let currentCategory = "Все";
@@ -104,9 +101,9 @@ async function loadHomeImages() {
     const uniqueByImage = getUniquePlantsByImage(homePlants);
     const randomPlants = getRandomUniqueItems(uniqueByImage, 3);
 
-    setHomeCard(homeImage1, homeCaption1, randomPlants[0]);
-    setHomeCard(homeImage2, homeCaption2, randomPlants[1]);
-    setHomeCard(homeImage3, homeCaption3, randomPlants[2]);
+      setHomeCard(homeImage1, randomPlants[0]);
+      setHomeCard(homeImage2, randomPlants[1]);
+      setHomeCard(homeImage3, randomPlants[2]);
   } catch (error) {
     console.error(error);
   }
@@ -135,12 +132,11 @@ function getRandomUniqueItems(items, count) {
   return shuffled.slice(0, count);
 }
 
-function setHomeCard(imageElement, captionElement, plant) {
-  if (!imageElement || !captionElement || !plant) return;
+function setHomeCard(imageElement, plant) {
+  if (!imageElement || !plant) return;
 
   imageElement.src = `images/${plant.image}`;
   imageElement.alt = plant.name;
-  captionElement.textContent = plant.name;
 
   imageElement.onerror = () => {
     imageElement.src = "images/logo.png";
