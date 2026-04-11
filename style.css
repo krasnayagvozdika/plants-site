@@ -45,13 +45,12 @@ button {
   z-index: 1000;
 
   background:
-    radial-gradient(circle at left, rgba(47, 125, 50, 0.16), transparent 36%),
-    radial-gradient(circle at right, rgba(120, 180, 90, 0.12), transparent 32%),
-    rgba(255, 255, 255, 0.92);
+    radial-gradient(circle at 80% 20%, rgba(47, 125, 50, 0.25), transparent 40%),
+    radial-gradient(circle at 20% 50%, rgba(120, 180, 90, 0.18), transparent 45%),
+    linear-gradient(180deg, #f9fbf8 0%, #eef5ee 100%);
 
-  backdrop-filter: blur(8px);
   border-bottom: 1px solid #dfe5df;
-  box-shadow: 0 2px 8px rgba(47, 125, 50, 0.05);
+  box-shadow: 0 2px 8px rgba(47, 125, 50, 0.06);
 }
 
 .site-header {
