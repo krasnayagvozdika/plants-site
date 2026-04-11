@@ -8,73 +8,63 @@
 </head>
 <body>
 
-  <header class="site-header">
-    <div class="container header-inner">
-      <a href="index.html" class="logo-link" aria-label="На главную">
-        <img src="images/logo.png" alt="Красная гвоздика" class="logo-image">
-     </a>
+<header class="site-header">
+  <div class="container header-inner">
 
-      <button
-        class="menu-toggle"
-        id="menu-toggle"
-        type="button"
-        aria-label="Открыть меню"
-        aria-expanded="false"
-        aria-controls="main-nav"
-      >
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+    <a href="index.html" class="logo-link">
+      <img src="images/logo.png" class="logo-image">
+    </a>
 
-      <nav class="main-nav" id="main-nav">
-        <a href="index.html" class="nav-link">Каталог</a>
-        <a href="about.html" class="nav-link active">О нас</a>
-        <a href="info.html" class="nav-link">Информация</a>
-      </nav>
-    </div>
-  </header>
+    <button id="menu-toggle" class="menu-toggle">
+      <span></span><span></span><span></span>
+    </button>
 
-  <main class="page">
-    <div class="container page-wrap">
-      <section class="page-card">
-        <h1 class="page-title">О нас</h1>
+    <nav id="main-nav" class="main-nav">
+      <a href="index.html" class="nav-link">Каталог</a>
+      <a href="about.html" class="nav-link active">О нас</a>
+      <a href="info.html" class="nav-link">Информация</a>
+    </nav>
 
-        <p>
-          Предприятие «Красная гвоздика» занимается выращиванием и реализацией растений, а также работами по озеленению и благоустройству.
-        </p>
+  </div>
+</header>
 
-        <div class="info-grid">
-          <div class="info-item">
-            <h2>Направление работы</h2>
-            <p>Растения, озеленение, благоустройство территорий.</p>
-          </div>
+<main class="page">
+  <div class="container page-wrap">
+    <div class="page-card">
 
-          <div class="info-item">
-            <h2>Город</h2>
-            <p>Гомель, Республика Беларусь.</p>
-          </div>
+      <h1 class="page-title">О нас</h1>
 
-          <div class="info-item">
-            <h2>Каталог</h2>
-            <p>На сайте собран удобный каталог растений с фото, описанием и ценами.</p>
-          </div>
+      <p>
+        Предприятие «Красная гвоздика» занимается выращиванием и реализацией растений,
+        а также озеленением территорий.
+      </p>
 
-          <div class="info-item">
-            <h2>Для кого</h2>
-            <p>Для частных покупателей, организаций и всех, кто ищет растения для дома, сада и озеленения.</p>
-          </div>
+      <div class="info-grid">
+        <div class="info-item">
+          <h2>Город</h2>
+          <p>Гомель</p>
         </div>
 
-        <div class="content-block">
-          <p>
-            Этот сайт-каталог создан для быстрого просмотра ассортимента и удобного выбора растений.
-          </p>
+        <div class="info-item">
+          <h2>Направление</h2>
+          <p>Растения, благоустройство, озеленение</p>
         </div>
-      </section>
-    </div>
-  </main>
 
-  <script src="script.js"></script>
+        <div class="info-item">
+          <h2>Каталог</h2>
+          <p>Удобный просмотр растений с фото и описанием</p>
+        </div>
+
+        <div class="info-item">
+          <h2>Для кого</h2>
+          <p>Частные покупатели и организации</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<script src="script.js"></script>
 </body>
 </html>
