@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Каталог растений — Красная гвоздика</title>
+  <meta name="description" content="Каталог растений предприятия «Красная гвоздика». Фото, категории, описание и цены.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo-link" aria-label="На главную">
+        <img src="images/logo.png" alt="Красная гвоздика" class="logo-image">
+      </a>
+
+      <button
+        id="menu-toggle"
+        class="menu-toggle"
+        type="button"
+        aria-label="Открыть меню"
+        aria-expanded="false"
+        aria-controls="main-nav"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav id="main-nav" class="main-nav">
+        <a href="index.html" class="nav-link">Главная</a>
+        <a href="catalog.html" class="nav-link active">Каталог</a>
+        <a href="about.html" class="nav-link">О нас</a>
+        <a href="info.html" class="nav-link">Информация</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-box">
+      <h1>Каталог растений</h1>
+      <p>Выберите категорию и откройте карточку растения</p>
+    </div>
+  </section>
+
+  <section class="filters container" id="filters"></section>
+
+  <main class="catalog container" id="catalog">
+    <p class="empty">Загрузка...</p>
+  </main>
+
+  <div id="modal" class="modal" aria-hidden="true">
+    <div class="modal-content">
+      <button class="modal-close" type="button" onclick="closeModal()" aria-label="Закрыть">×</button>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <img src="images/logo.png" alt="Красная гвоздика" class="footer-logo">
+        <p class="footer-text">
+          Государственное предприятие «Красная гвоздика»
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h3>Навигация</h3>
+        <p><a href="index.html">Главная</a></p>
+        <p><a href="catalog.html">Каталог</a></p>
+        <p><a href="about.html">О нас</a></p>
+        <p><a href="info.html">Информация</a></p>
+      </div>
+
+      <div class="footer-col">
+        <h3>Контакты</h3>
+        <p><a href="tel:+375232561974">8 (0232) 56-19-74</a></p>
+        <p><a href="mailto:mail@krasnayagvozdika.by">mail@krasnayagvozdika.by</a></p>
+      </div>
+
+      <div class="footer-col">
+        <h3>Адрес</h3>
+        <p>Республика Беларусь, г. Гомель, ул. Аграрная, 2</p>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>УНП: 400052077</p>
+      <p>© Красная гвоздика</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

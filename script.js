@@ -8,6 +8,10 @@ const modalBody = document.getElementById("modal-body");
 const menuToggle = document.getElementById("menu-toggle");
 const mainNav = document.getElementById("main-nav");
 
+const homeImage1 = document.getElementById("home-image-1");
+const homeImage2 = document.getElementById("home-image-2");
+const homeImage3 = document.getElementById("home-image-3");
+
 let plants = [];
 let currentCategory = "Все";
 
@@ -36,9 +40,11 @@ if (menuToggle && mainNav) {
   });
 }
 
-/* catalog */
+/* load data where needed */
 if (catalog && filters) {
   loadData();
+} else if (homeImage1 && homeImage2 && homeImage3) {
+  loadHomeImages();
 }
 
 async function loadData() {
@@ -72,6 +78,56 @@ async function loadData() {
     }
     console.error(error);
   }
+}
+
+async function loadHomeImages() {
+  try {
+    const res = await fetch(URL);
+    const text = await res.text();
+
+    const rows = text.trim().split("\n").slice(1);
+
+    const homePlants = rows
+      .map(parseCsvRow)
+      .filter((cols) => cols.length >= 5)
+      .map((cols) => ({
+        id: cleanValue(cols[0]),
+        name: cleanValue(cols[1]),
+        image: cleanValue(cols[3]),
+        category: cleanValue(cols[4]),
+      }))
+      .filter((p) => p.name && p.image);
+
+    const randomPlants = getRandomUniqueItems(homePlants, 3);
+
+    if (randomPlants[0]) {
+      homeImage1.src = `images/${randomPlants[0].image}`;
+      homeImage1.alt = randomPlants[0].name;
+    }
+
+    if (randomPlants[1]) {
+      homeImage2.src = `images/${randomPlants[1].image}`;
+      homeImage2.alt = randomPlants[1].name;
+    }
+
+    if (randomPlants[2]) {
+      homeImage3.src = `images/${randomPlants[2].image}`;
+      homeImage3.alt = randomPlants[2].name;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function getRandomUniqueItems(items, count) {
+  const shuffled = [...items];
+
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const randomIndex = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[i]];
+  }
+
+  return shuffled.slice(0, count);
 }
 
 function parseCsvRow(row) {
@@ -191,12 +247,14 @@ function openCard(p) {
   `;
 
   modal.classList.add("open");
+  modal.setAttribute("aria-hidden", "false");
   document.body.style.overflow = "hidden";
 }
 
 function closeModal() {
   if (!modal) return;
   modal.classList.remove("open");
+  modal.setAttribute("aria-hidden", "true");
   document.body.style.overflow = "";
 }
 

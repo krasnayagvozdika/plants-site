@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Красная гвоздика — каталог растений</title>
+  <title>Красная гвоздика — растения и озеленение в Гомеле</title>
+  <meta name="description" content="Государственное предприятие «Красная гвоздика». Растения, озеленение и благоустройство в Гомеле.">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <header class="site-header">
     <div class="container header-inner">
-
       <a href="index.html" class="logo-link" aria-label="На главную">
         <img src="images/logo.png" alt="Красная гвоздика" class="logo-image">
       </a>
@@ -29,41 +29,145 @@
       </button>
 
       <nav id="main-nav" class="main-nav">
-        <a href="index.html" class="nav-link active">Каталог</a>
+        <a href="index.html" class="nav-link active">Главная</a>
+        <a href="catalog.html" class="nav-link">Каталог</a>
         <a href="about.html" class="nav-link">О нас</a>
         <a href="info.html" class="nav-link">Информация</a>
       </nav>
-
     </div>
   </header>
 
-  <section class="hero">
-    <div class="container hero-box">
-      <h1>Магазин растений</h1>
-      <p>Гомель · ул. Аграрная, 2</p>
-    </div>
-  </section>
+  <main>
+    <section class="home-hero">
+      <div class="container home-hero-grid">
+        <div class="home-hero-content">
+          <span class="page-kicker">Гомель · ул. Аграрная, 2</span>
+          <h1>Растения и озеленение от предприятия «Красная гвоздика»</h1>
+          <p>
+            Каталог растений, продукция предприятия и услуги по благоустройству
+            городских и частных территорий.
+          </p>
 
-  <section class="filters container" id="filters"></section>
+          <div class="hero-actions">
+            <a href="catalog.html" class="btn btn-primary">Перейти в каталог</a>
+            <a href="info.html" class="btn btn-secondary">Контакты</a>
+          </div>
+        </div>
 
-  <main class="catalog container" id="catalog">
-    <p class="empty">Загрузка...</p>
+        <div class="home-hero-gallery" id="home-gallery">
+          <div class="gallery-card gallery-card-large">
+            <img id="home-image-1" src="images/logo.png" alt="Растения Красная гвоздика">
+          </div>
+          <div class="gallery-card">
+            <img id="home-image-2" src="images/logo.png" alt="Растения Красная гвоздика">
+          </div>
+          <div class="gallery-card">
+            <img id="home-image-3" src="images/logo.png" alt="Растения Красная гвоздика">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-section">
+      <div class="container">
+        <div class="section-head section-head-center">
+          <h2>О предприятии</h2>
+          <p>
+            Государственное предприятие «Красная гвоздика» занимается выращиванием растений,
+            озеленением и благоустройством территорий.
+          </p>
+        </div>
+
+        <div class="home-features">
+          <article class="feature-card">
+            <h3>Каталог растений</h3>
+            <p>
+              Удобный просмотр ассортимента с фото, описанием, категориями и ценами.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <h3>Озеленение</h3>
+            <p>
+              Работы по благоустройству и оформлению территорий с профессиональным подходом.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <h3>Надёжность</h3>
+            <p>
+              Государственное предприятие с опытом работы и вниманием к качеству.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="catalog-cta-section">
+      <div class="container">
+        <div class="catalog-cta">
+          <div class="catalog-cta-text">
+            <span class="page-kicker">Каталог растений</span>
+            <h2>Смотрите ассортимент в отдельном каталоге</h2>
+            <p>
+              На странице каталога можно выбрать категорию, открыть карточку растения
+              и посмотреть подробную информацию.
+            </p>
+          </div>
+
+          <div class="catalog-cta-action">
+            <a href="catalog.html" class="btn btn-primary btn-large">Открыть каталог</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-section home-contact-section">
+      <div class="container">
+        <div class="section-head section-head-center">
+          <h2>Контакты</h2>
+        </div>
+
+        <div class="info-grid">
+          <article class="info-item">
+            <h2>Телефон</h2>
+            <p><a href="tel:+375232561974">8 (0232) 56-19-74</a></p>
+          </article>
+
+          <article class="info-item">
+            <h2>Email</h2>
+            <p><a href="mailto:mail@krasnayagvozdika.by">mail@krasnayagvozdika.by</a></p>
+          </article>
+
+          <article class="info-item">
+            <h2>Адрес</h2>
+            <p>Республика Беларусь, г. Гомель, ул. Аграрная, 2</p>
+          </article>
+
+          <article class="info-item">
+            <h2>Режим работы</h2>
+            <p>Понедельник — пятница</p>
+            <p>8:00–17:00</p>
+            <p>Обед: 12:00–13:00</p>
+          </article>
+        </div>
+      </div>
+    </section>
   </main>
-
-  <div id="modal" class="modal" aria-hidden="true">
-    <div class="modal-content">
-      <button class="modal-close" type="button" onclick="closeModal()" aria-label="Закрыть">×</button>
-      <div id="modal-body"></div>
-    </div>
-  </div>
 
   <footer class="site-footer">
     <div class="container footer-grid">
       <div class="footer-brand">
         <img src="images/logo.png" alt="Красная гвоздика" class="footer-logo">
-        <p class="footer-text">
-          Государственное предприятие «Красная гвоздика»
-        </p>
+        <p class="footer-text">Государственное предприятие «Красная гвоздика»</p>
+      </div>
+
+      <div class="footer-col">
+        <h3>Навигация</h3>
+        <p><a href="index.html">Главная</a></p>
+        <p><a href="catalog.html">Каталог</a></p>
+        <p><a href="about.html">О нас</a></p>
+        <p><a href="info.html">Информация</a></p>
       </div>
 
       <div class="footer-col">
@@ -75,13 +179,6 @@
       <div class="footer-col">
         <h3>Адрес</h3>
         <p>Республика Беларусь, г. Гомель, ул. Аграрная, 2</p>
-      </div>
-
-      <div class="footer-col">
-        <h3>Режим работы</h3>
-        <p>Понедельник — пятница</p>
-        <p>8:00–17:00</p>
-        <p>Обед: 12:00–13:00</p>
       </div>
     </div>
 
