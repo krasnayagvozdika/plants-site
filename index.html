@@ -11,11 +11,18 @@
   <header class="site-header">
     <div class="container header-inner">
 
-      <a href="index.html" class="logo-link">
+      <a href="index.html" class="logo-link" aria-label="На главную">
         <img src="images/logo.png" alt="Красная гвоздика" class="logo-image">
       </a>
 
-      <button id="menu-toggle" class="menu-toggle">
+      <button
+        id="menu-toggle"
+        class="menu-toggle"
+        type="button"
+        aria-label="Открыть меню"
+        aria-expanded="false"
+        aria-controls="main-nav"
+      >
         <span></span>
         <span></span>
         <span></span>
@@ -43,12 +50,46 @@
     <p class="empty">Загрузка...</p>
   </main>
 
-  <div id="modal" class="modal">
+  <div id="modal" class="modal" aria-hidden="true">
     <div class="modal-content">
-      <button class="modal-close" onclick="closeModal()">×</button>
+      <button class="modal-close" type="button" onclick="closeModal()" aria-label="Закрыть">×</button>
       <div id="modal-body"></div>
     </div>
   </div>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <img src="images/logo.png" alt="Красная гвоздика" class="footer-logo">
+        <p class="footer-text">
+          Государственное предприятие «Красная гвоздика»
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h3>Контакты</h3>
+        <p><a href="tel:+375232561974">8 (0232) 56-19-74</a></p>
+        <p><a href="mailto:mail@krasnayagvozdika.by">mail@krasnayagvozdika.by</a></p>
+      </div>
+
+      <div class="footer-col">
+        <h3>Адрес</h3>
+        <p>Республика Беларусь, г. Гомель, ул. Аграрная, 2</p>
+      </div>
+
+      <div class="footer-col">
+        <h3>Режим работы</h3>
+        <p>Понедельник — пятница</p>
+        <p>8:00–17:00</p>
+        <p>Обед: 12:00–13:00</p>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>УНП: 400052077</p>
+      <p>© Красная гвоздика</p>
+    </div>
+  </footer>
 
   <script src="script.js"></script>
 </body>

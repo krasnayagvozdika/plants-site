@@ -8,62 +8,103 @@
 </head>
 <body>
 
-<header class="site-header">
-  <div class="container header-inner">
+  <header class="site-header">
+    <div class="container header-inner">
 
-    <a href="index.html" class="logo-link">
-      <img src="images/logo.png" class="logo-image">
-    </a>
+      <a href="index.html" class="logo-link" aria-label="На главную">
+        <img src="images/logo.png" alt="Красная гвоздика" class="logo-image">
+      </a>
 
-    <button id="menu-toggle" class="menu-toggle">
-      <span></span><span></span><span></span>
-    </button>
+      <button
+        id="menu-toggle"
+        class="menu-toggle"
+        type="button"
+        aria-label="Открыть меню"
+        aria-expanded="false"
+        aria-controls="main-nav"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
 
-    <nav id="main-nav" class="main-nav">
-      <a href="index.html" class="nav-link">Каталог</a>
-      <a href="about.html" class="nav-link">О нас</a>
-      <a href="info.html" class="nav-link active">Информация</a>
-    </nav>
-
-  </div>
-</header>
-
-<main class="page">
-  <div class="container page-wrap">
-    <div class="page-card">
-
-      <h1 class="page-title">Информация</h1>
-
-      <div class="info-grid">
-
-        <div class="info-item">
-          <h2>Телефон</h2>
-          <p><a href="tel:+375232561974">8 (0232) 56-19-74</a></p>
-        </div>
-
-        <div class="info-item">
-          <h2>Email</h2>
-          <p>mail@krasnayagvozdika.by</p>
-        </div>
-
-        <div class="info-item">
-          <h2>Адрес</h2>
-          <p>Гомель, ул. Аграрная, 2</p>
-        </div>
-
-        <div class="info-item">
-          <h2>Режим работы</h2>
-          <p>Пн–Пт: 8:00–17:00</p>
-        </div>
-
-      </div>
-
-      <p>Наличие и стоимость уточняйте по телефону.</p>
+      <nav id="main-nav" class="main-nav">
+        <a href="index.html" class="nav-link">Каталог</a>
+        <a href="about.html" class="nav-link">О нас</a>
+        <a href="info.html" class="nav-link active">Информация</a>
+      </nav>
 
     </div>
-  </div>
-</main>
+  </header>
 
-<script src="script.js"></script>
+  <main class="page">
+    <div class="container page-wrap">
+      <div class="page-card">
+
+        <h1 class="page-title">Информация</h1>
+
+        <div class="info-grid">
+          <div class="info-item">
+            <h2>Телефон</h2>
+            <p><a href="tel:+375232561974">8 (0232) 56-19-74</a></p>
+          </div>
+
+          <div class="info-item">
+            <h2>Email</h2>
+            <p><a href="mailto:mail@krasnayagvozdika.by">mail@krasnayagvozdika.by</a></p>
+          </div>
+
+          <div class="info-item">
+            <h2>Адрес</h2>
+            <p>Гомель, ул. Аграрная, 2</p>
+          </div>
+
+          <div class="info-item">
+            <h2>Режим работы</h2>
+            <p>Пн–Пт: 8:00–17:00</p>
+            <p>Обед: 12:00–13:00</p>
+          </div>
+        </div>
+
+        <p>Наличие и стоимость уточняйте по телефону.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <img src="images/logo.png" alt="Красная гвоздика" class="footer-logo">
+        <p class="footer-text">
+          Государственное предприятие «Красная гвоздика»
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h3>Контакты</h3>
+        <p><a href="tel:+375232561974">8 (0232) 56-19-74</a></p>
+        <p><a href="mailto:mail@krasnayagvozdika.by">mail@krasnayagvozdika.by</a></p>
+      </div>
+
+      <div class="footer-col">
+        <h3>Адрес</h3>
+        <p>Республика Беларусь, г. Гомель, ул. Аграрная, 2</p>
+      </div>
+
+      <div class="footer-col">
+        <h3>Режим работы</h3>
+        <p>Понедельник — пятница</p>
+        <p>8:00–17:00</p>
+        <p>Обед: 12:00–13:00</p>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>УНП: 400052077</p>
+      <p>© Красная гвоздика</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
