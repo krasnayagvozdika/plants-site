@@ -13,7 +13,6 @@ body {
   background: #f5f7f4;
   color: #1f2937;
   line-height: 1.5;
-  animation: pageFade 0.6s ease;
 }
 
 img {
@@ -83,14 +82,11 @@ button {
   padding: 10px 14px;
   font-weight: 700;
   border-radius: 10px;
-  transition:
-    color 0.25s ease,
-    background 0.25s ease,
-    transform 0.25s ease;
+  transition: color 0.22s ease, background 0.22s ease, transform 0.22s ease;
 }
 
 .nav-link:hover {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 .nav-link.active,
@@ -159,23 +155,19 @@ button {
   border-radius: 20px;
   background: #e5e7eb;
   color: #1f2937;
-  transition:
-    background 0.25s ease,
-    color 0.25s ease,
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
+  transition: background 0.22s ease, color 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease;
 }
 
 .filters button:hover {
   background: #d1d5db;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
 }
 
 .filters button.active {
   background: #2f7d32;
   color: #ffffff;
-  box-shadow: 0 10px 20px rgba(47, 125, 50, 0.22);
+  box-shadow: 0 8px 16px rgba(47, 125, 50, 0.18);
 }
 
 /* CATALOG */
@@ -196,28 +188,24 @@ button {
   flex-direction: column;
   cursor: pointer;
   border: 1px solid transparent;
-  transition:
-    transform 0.32s ease,
-    box-shadow 0.32s ease,
-    border-color 0.32s ease;
-  animation: cardFadeUp 0.7s ease both;
+  transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
 }
 
 .card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 20px 36px rgba(0, 0, 0, 0.16);
-  border-color: rgba(47, 125, 50, 0.18);
+  transform: translateY(-7px);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.12);
+  border-color: rgba(47, 125, 50, 0.14);
 }
 
 .card img {
   width: 100%;
   height: 300px;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  transition: transform 0.45s ease;
 }
 
 .card:hover img {
-  transform: scale(1.09);
+  transform: scale(1.06);
 }
 
 .card-content {
@@ -225,35 +213,26 @@ button {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  position: relative;
 }
 
 .card h3 {
   font-size: 18px;
   line-height: 1.3;
-  transition: color 0.25s ease, transform 0.25s ease;
+  transition: color 0.25s ease;
 }
 
 .card:hover h3 {
   color: #1c5f26;
-  transform: translateY(-1px);
 }
 
 .meta {
   font-size: 13px;
   color: #6b7280;
-  transition: color 0.25s ease;
 }
 
 .price {
   font-size: 18px;
   font-weight: 700;
-  transition: transform 0.25s ease, color 0.25s ease;
-}
-
-.card:hover .price {
-  transform: translateY(-1px);
-  color: #1c5f26;
 }
 
 .empty {
@@ -289,7 +268,6 @@ button {
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
-  animation: modalPop 0.28s ease;
 }
 
 .modal-close {
@@ -302,7 +280,7 @@ button {
   border-radius: 50%;
   font-size: 24px;
   line-height: 1;
-  transition: transform 0.2s ease, background 0.2s ease;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .modal-close:hover {
@@ -347,89 +325,144 @@ button {
   color: #4b5563;
 }
 
-/* PAGES */
+/* INNER PAGES */
 .page {
-  padding: 30px 0 40px;
+  padding: 36px 0 48px;
 }
 
 .page-wrap {
-  max-width: 900px;
-  margin: auto;
+  max-width: 960px;
+  margin: 0 auto;
 }
 
 .page-card {
-  background: #ffffff;
-  padding: 24px;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  animation: cardFadeUp 0.7s ease both;
+  background: linear-gradient(180deg, #ffffff 0%, #fbfcfb 100%);
+  padding: 30px;
+  border-radius: 22px;
+  border: 1px solid #e7ece6;
+  box-shadow: 0 12px 28px rgba(31, 41, 55, 0.06);
+}
+
+.page-intro {
+  margin-bottom: 24px;
+}
+
+.page-kicker {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(47, 125, 50, 0.10);
+  color: #2f7d32;
+  font-size: 13px;
+  font-weight: 700;
 }
 
 .page-title {
-  font-size: 28px;
-  margin-bottom: 20px;
+  font-size: 34px;
+  line-height: 1.15;
+  margin-bottom: 10px;
 }
 
-.page-card p {
-  color: #374151;
-  line-height: 1.6;
-  margin-bottom: 14px;
+.page-lead {
+  font-size: 17px;
+  color: #4b5563;
+  max-width: 760px;
+}
+
+.content-block {
+  margin-top: 26px;
+  padding-top: 22px;
+  border-top: 1px solid #edf1ec;
+}
+
+.content-block h2 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.content-block p {
+  color: #4b5563;
+  line-height: 1.7;
 }
 
 .info-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
 }
 
 .info-item {
-  background: #f3f4f6;
-  padding: 14px;
-  border-radius: 12px;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  background: #f6f8f5;
+  padding: 18px;
+  border-radius: 16px;
+  border: 1px solid #e7ece6;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
 }
 
 .info-item:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.06);
+  border-color: rgba(47, 125, 50, 0.18);
 }
 
 .info-item h2 {
   font-size: 18px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  color: #1f2937;
 }
 
 .info-item p {
   margin-bottom: 6px;
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+.info-item a:hover {
+  color: #2f7d32;
 }
 
 /* FOOTER */
 .site-footer {
-  background: linear-gradient(#f1f5ef, #e8efe6);
+  background: linear-gradient(180deg, #f1f5ef 0%, #e8efe6 100%);
+  border-top: 1px solid #dbe5d8;
   margin-top: 10px;
 }
 
 .footer-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  padding: 30px 20px;
+  grid-template-columns: 1.2fr 1fr 1fr 1fr;
+  gap: 24px;
+  padding: 28px 20px 20px;
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .footer-logo {
-  width: 150px;
+  width: 170px;
+  height: auto;
+  object-fit: contain;
 }
 
 .footer-text {
   color: #4b5563;
+  max-width: 280px;
 }
 
 .footer-col h3 {
+  font-size: 16px;
   margin-bottom: 10px;
+  color: #1f2937;
 }
 
+.footer-col p,
 .footer-col a {
-  transition: color 0.22s ease;
+  color: #4b5563;
+  line-height: 1.6;
 }
 
 .footer-col a:hover {
@@ -439,44 +472,20 @@ button {
 .footer-bottom {
   display: flex;
   justify-content: space-between;
-  padding: 10px 20px;
-  font-size: 14px;
+  gap: 16px;
+  padding: 14px 20px 20px;
+  border-top: 1px solid #dbe5d8;
   color: #6b7280;
-}
-
-/* ANIMATIONS */
-@keyframes pageFade {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes cardFadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes modalPop {
-  from {
-    opacity: 0;
-    transform: scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+  font-size: 14px;
 }
 
 /* MOBILE */
+@media (max-width: 900px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 @media (max-width: 768px) {
   .menu-toggle {
     display: flex;
@@ -486,18 +495,22 @@ button {
     display: none;
     flex-direction: column;
     position: absolute;
-    background: white;
-    top: 80px;
+    background: #ffffff;
+    top: calc(100% + 1px);
     left: 0;
     right: 0;
+    padding: 8px 0;
+    border-bottom: 1px solid #e5e7eb;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
   }
 
   .main-nav.open {
     display: flex;
   }
 
-  .footer-grid {
-    grid-template-columns: 1fr;
+  .nav-link {
+    border-radius: 0;
+    padding: 14px 20px;
   }
 
   .info-grid {
@@ -574,15 +587,34 @@ button {
   }
 
   .page-card {
-    padding: 16px;
+    padding: 18px;
+    border-radius: 18px;
   }
 
   .page-title {
-    font-size: 24px;
+    font-size: 26px;
+  }
+
+  .page-lead {
+    font-size: 15px;
+  }
+
+  .content-block h2 {
+    font-size: 20px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 24px 12px 18px;
   }
 
   .footer-bottom {
     flex-direction: column;
-    gap: 6px;
+    padding: 12px 12px 18px;
+  }
+
+  .footer-logo {
+    width: 150px;
   }
 }
