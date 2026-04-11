@@ -12,6 +12,10 @@ const homeImage1 = document.getElementById("home-image-1");
 const homeImage2 = document.getElementById("home-image-2");
 const homeImage3 = document.getElementById("home-image-3");
 
+const homeCaption1 = document.getElementById("home-caption-1");
+const homeCaption2 = document.getElementById("home-caption-2");
+const homeCaption3 = document.getElementById("home-caption-3");
+
 let plants = [];
 let currentCategory = "Все";
 
@@ -94,29 +98,30 @@ async function loadHomeImages() {
         id: cleanValue(cols[0]),
         name: cleanValue(cols[1]),
         image: cleanValue(cols[3]),
-        category: cleanValue(cols[4]),
       }))
       .filter((p) => p.name && p.image);
 
-    const randomPlants = getRandomUniqueItems(homePlants, 3);
+    const uniqueByImage = getUniquePlantsByImage(homePlants);
+    const randomPlants = getRandomUniqueItems(uniqueByImage, 3);
 
-    if (randomPlants[0]) {
-      homeImage1.src = `images/${randomPlants[0].image}`;
-      homeImage1.alt = randomPlants[0].name;
-    }
-
-    if (randomPlants[1]) {
-      homeImage2.src = `images/${randomPlants[1].image}`;
-      homeImage2.alt = randomPlants[1].name;
-    }
-
-    if (randomPlants[2]) {
-      homeImage3.src = `images/${randomPlants[2].image}`;
-      homeImage3.alt = randomPlants[2].name;
-    }
+    setHomeCard(homeImage1, homeCaption1, randomPlants[0]);
+    setHomeCard(homeImage2, homeCaption2, randomPlants[1]);
+    setHomeCard(homeImage3, homeCaption3, randomPlants[2]);
   } catch (error) {
     console.error(error);
   }
+}
+
+function getUniquePlantsByImage(items) {
+  const map = new Map();
+
+  items.forEach((item) => {
+    if (!map.has(item.image)) {
+      map.set(item.image, item);
+    }
+  });
+
+  return Array.from(map.values());
 }
 
 function getRandomUniqueItems(items, count) {
@@ -128,6 +133,19 @@ function getRandomUniqueItems(items, count) {
   }
 
   return shuffled.slice(0, count);
+}
+
+function setHomeCard(imageElement, captionElement, plant) {
+  if (!imageElement || !captionElement || !plant) return;
+
+  imageElement.src = `images/${plant.image}`;
+  imageElement.alt = plant.name;
+  captionElement.textContent = plant.name;
+
+  imageElement.onerror = () => {
+    imageElement.src = "images/logo.png";
+    imageElement.alt = "Красная гвоздика";
+  };
 }
 
 function parseCsvRow(row) {
@@ -206,7 +224,7 @@ function renderCatalog() {
 
       return `
         <article class="card" data-id="${escapeHtml(p.id)}">
-          <img src="images/${escapeHtml(p.image)}" alt="${escapeHtml(p.name)}">
+          <img src="images/${escapeHtml(p.image)}" alt="${escapeHtml(p.name)}" loading="lazy">
           <div class="card-content">
             <h3>${escapeHtml(p.name)}</h3>
             <div class="meta">${escapeHtml(p.category)} · ${escapeHtml(typeLabel)}</div>
