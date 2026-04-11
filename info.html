@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Информация — Красная гвоздика</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo-link" aria-label="На главную">
+        <span class="logo-text">Красная гвоздика</span>
+      </a>
+
+      <button
+        class="menu-toggle"
+        id="menu-toggle"
+        type="button"
+        aria-label="Открыть меню"
+        aria-expanded="false"
+        aria-controls="main-nav"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="main-nav" id="main-nav">
+        <a href="index.html" class="nav-link">Каталог</a>
+        <a href="about.html" class="nav-link">О нас</a>
+        <a href="info.html" class="nav-link active">Информация</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="container">
+      <section class="page-card">
+        <h1 class="page-title">Информация</h1>
+
+        <div class="info-grid">
+          <div class="info-item">
+            <h2>Контакты</h2>
+            <p><strong>Телефон:</strong> 8 (0232) 56-19-74</p>
+            <p><strong>Email:</strong> mail@krasnayagvozdika.by</p>
+          </div>
+
+          <div class="info-item">
+            <h2>Адрес</h2>
+            <p>Республика Беларусь, г. Гомель, ул. Аграрная, 2</p>
+          </div>
+
+          <div class="info-item">
+            <h2>Режим работы</h2>
+            <p>Понедельник — пятница: 8:00–17:00</p>
+            <p>Обед: 12:00–13:00</p>
+          </div>
+
+          <div class="info-item">
+            <h2>О каталоге</h2>
+            <p>Выберите категорию на главной странице и нажмите на карточку растения для подробной информации.</p>
+          </div>
+        </div>
+
+        <div class="content-block">
+          <p>
+            Контактные данные и режим работы взяты с официального сайта предприятия. :contentReference[oaicite:8]{index=8}
+          </p>
+          <p>
+            Если цена в карточке не указана, это означает, что она предоставляется по запросу.
+          </p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -5,8 +5,41 @@ const filters = document.getElementById("filters");
 const modal = document.getElementById("modal");
 const modalBody = document.getElementById("modal-body");
 
+const menuToggle = document.getElementById("menu-toggle");
+const mainNav = document.getElementById("main-nav");
+
 let plants = [];
 let currentCategory = "Все";
+
+/* mobile menu */
+if (menuToggle && mainNav) {
+  menuToggle.addEventListener("click", () => {
+    const isOpen = mainNav.classList.toggle("open");
+    menuToggle.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  document.querySelectorAll(".main-nav .nav-link").forEach((link) => {
+    link.addEventListener("click", () => {
+      mainNav.classList.remove("open");
+      menuToggle.setAttribute("aria-expanded", "false");
+    });
+  });
+
+  document.addEventListener("click", (e) => {
+    const clickedInsideNav = mainNav.contains(e.target);
+    const clickedToggle = menuToggle.contains(e.target);
+
+    if (!clickedInsideNav && !clickedToggle) {
+      mainNav.classList.remove("open");
+      menuToggle.setAttribute("aria-expanded", "false");
+    }
+  });
+}
+
+/* catalog */
+if (catalog && filters) {
+  loadData();
+}
 
 async function loadData() {
   try {
@@ -34,7 +67,9 @@ async function loadData() {
     renderFilters();
     renderCatalog();
   } catch (error) {
-    catalog.innerHTML = `<div class="empty">Не удалось загрузить данные</div>`;
+    if (catalog) {
+      catalog.innerHTML = `<div class="empty">Не удалось загрузить данные</div>`;
+    }
     console.error(error);
   }
 }
@@ -72,8 +107,9 @@ function cleanValue(value = "") {
 }
 
 function renderFilters() {
-  const categories = ["Все", ...new Set(plants.map((p) => p.category))];
+  if (!filters) return;
 
+  const categories = ["Все", ...new Set(plants.map((p) => p.category))];
   filters.innerHTML = "";
 
   categories.forEach((cat) => {
@@ -95,6 +131,8 @@ function renderFilters() {
 }
 
 function renderCatalog() {
+  if (!catalog) return;
+
   let filtered = plants;
 
   if (currentCategory !== "Все") {
@@ -108,14 +146,14 @@ function renderCatalog() {
 
   catalog.innerHTML = filtered
     .map((p) => {
-      const typeLabel = p.type === "pot" ? "в горшке" : "в грунте";
+      const typeLabel = getTypeLabel(p.type);
 
       return `
         <article class="card" data-id="${escapeHtml(p.id)}">
           <img src="images/${escapeHtml(p.image)}" alt="${escapeHtml(p.name)}">
           <div class="card-content">
             <h3>${escapeHtml(p.name)}</h3>
-            <div class="meta">${escapeHtml(p.category)} · ${typeLabel}</div>
+            <div class="meta">${escapeHtml(p.category)} · ${escapeHtml(typeLabel)}</div>
             ${p.price ? `<div class="price">${escapeHtml(p.price)} Br</div>` : ""}
           </div>
         </article>
@@ -131,13 +169,22 @@ function renderCatalog() {
   });
 }
 
+function getTypeLabel(type) {
+  if (type === "pot") return "в горшке";
+  if (type === "ground") return "в грунте";
+  if (!type) return "тип не указан";
+  return type;
+}
+
 function openCard(p) {
-  const typeLabel = p.type === "pot" ? "в горшке" : "в грунте";
+  if (!modal || !modalBody) return;
+
+  const typeLabel = getTypeLabel(p.type);
 
   modalBody.innerHTML = `
     <img class="modal-image" src="images/${escapeHtml(p.image)}" alt="${escapeHtml(p.name)}">
     <h2 class="modal-title">${escapeHtml(p.name)}</h2>
-    <div class="modal-meta">${escapeHtml(p.category)} · ${typeLabel}</div>
+    <div class="modal-meta">${escapeHtml(p.category)} · ${escapeHtml(typeLabel)}</div>
     ${p.price ? `<div class="modal-price">${escapeHtml(p.price)} Br</div>` : `<div class="modal-price">Цена по запросу</div>`}
     ${p.size ? `<div class="modal-size">Размер: ${escapeHtml(p.size)}</div>` : ""}
     ${p.description ? `<div class="modal-description">${escapeHtml(p.description)}</div>` : ""}
@@ -148,12 +195,13 @@ function openCard(p) {
 }
 
 function closeModal() {
+  if (!modal) return;
   modal.classList.remove("open");
   document.body.style.overflow = "";
 }
 
 function escapeHtml(str = "") {
-  return str
+  return String(str)
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
@@ -161,16 +209,16 @@ function escapeHtml(str = "") {
     .replaceAll("'", "&#039;");
 }
 
-modal.addEventListener("click", (e) => {
-  if (e.target === modal) {
-    closeModal();
-  }
-});
+if (modal) {
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      closeModal();
+    }
+  });
+}
 
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
     closeModal();
   }
 });
-
-loadData();

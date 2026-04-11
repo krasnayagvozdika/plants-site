@@ -1,26 +1,56 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Красная гвоздика — каталог растений</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="header">
-    <h1>Предприятие “Красная гвоздика”</h1>
-    <p>Каталог растений · Гомель, Республика Беларусь</p>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo-link" aria-label="На главную">
+        <span class="logo-text">Красная гвоздика</span>
+      </a>
+
+      <button
+        class="menu-toggle"
+        id="menu-toggle"
+        type="button"
+        aria-label="Открыть меню"
+        aria-expanded="false"
+        aria-controls="main-nav"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="main-nav" id="main-nav">
+        <a href="index.html" class="nav-link active">Каталог</a>
+        <a href="about.html" class="nav-link">О нас</a>
+        <a href="info.html" class="nav-link">Информация</a>
+      </nav>
+    </div>
   </header>
 
-  <section class="filters" id="filters"></section>
+  <section class="hero">
+    <div class="container">
+      <h1>Красная гвоздика</h1>
+      <p>Каталог растений · Гомель</p>
+    </div>
+  </section>
 
-  <main class="catalog" id="catalog">
+  <section class="filters container" id="filters"></section>
+
+  <main class="catalog container" id="catalog">
     <p class="empty">Загрузка...</p>
   </main>
 
   <div id="modal" class="modal">
     <div class="modal-content">
-      <button class="modal-close" onclick="closeModal()">×</button>
+      <button class="modal-close" type="button" onclick="closeModal()">×</button>
       <div id="modal-body"></div>
     </div>
   </div>
