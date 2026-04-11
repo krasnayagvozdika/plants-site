@@ -968,3 +968,24 @@ button {
     width: 150px;
   }
 }
+
+/* FIX: подписи под фото на главной */
+
+.gallery-card img {
+  width: 100%;
+  height: 220px !important;
+  object-fit: cover;
+}
+
+.gallery-card-large img {
+  height: 440px !important;
+}
+
+.gallery-caption {
+  padding: 12px 14px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1f2937;
+  background: #ffffff;
+  border-top: 1px solid #eef2ee;
+}
