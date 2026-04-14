@@ -40,7 +40,23 @@
   <section class="hero">
     <div class="container hero-box">
       <h1>Каталог растений</h1>
-      <p>Выберите категорию и откройте карточку растения</p>
+      <p>Ищите по названию, выбирайте категорию и открывайте карточку растения</p>
+    </div>
+  </section>
+
+  <section class="catalog-search-wrap container">
+    <div class="catalog-search-card">
+      <label class="catalog-search-label" for="catalog-search">Поиск по названию</label>
+      <input
+        id="catalog-search"
+        class="catalog-search-input"
+        type="search"
+        list="plant-suggestions"
+        placeholder="Например, туя, лаванда, хлорофитум"
+        autocomplete="off"
+      >
+      <datalist id="plant-suggestions"></datalist>
+      <p class="catalog-search-hint">Подсказки появляются по мере ввода по имеющимся позициям каталога.</p>
     </div>
   </section>
 
@@ -83,7 +99,7 @@
 
       <div class="footer-col">
         <h3>Контакты</h3>
-        <p><a href="tel:+375232561974">8 (0232) 56-19-74</a></p>
+        <p><a href="tel:+375232561934">8 (0232) 56-19-34</a></p>
         <p><a href="mailto:mail@krasnayagvozdika.by">mail@krasnayagvozdika.by</a></p>
       </div>
 

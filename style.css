@@ -98,6 +98,7 @@ button {
 .nav-link:focus-visible,
 .menu-toggle:focus-visible,
 .btn:focus-visible,
+.catalog-search-input:focus-visible,
 .filters button:focus-visible,
 .modal-close:focus-visible,
 .card:focus-visible {
@@ -320,6 +321,52 @@ button {
   padding-top: 0;
 }
 
+/* CATALOG SEARCH */
+.catalog-search-wrap {
+  padding-top: 24px;
+}
+
+.catalog-search-card {
+  background: linear-gradient(180deg, #ffffff 0%, #fbfcfb 100%);
+  border: 1px solid #e7ece6;
+  border-radius: 22px;
+  padding: 20px 22px;
+  box-shadow: 0 12px 28px rgba(31, 41, 55, 0.06);
+}
+
+.catalog-search-label {
+  display: inline-block;
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.catalog-search-input {
+  width: 100%;
+  min-height: 54px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  border: 1px solid #d6ddd4;
+  background: #f9fbf8;
+  color: #1f2937;
+  font: inherit;
+  transition: border-color 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+}
+
+.catalog-search-input:focus {
+  border-color: rgba(47, 125, 50, 0.45);
+  box-shadow: 0 0 0 4px rgba(47, 125, 50, 0.10);
+  background: #ffffff;
+  outline: none;
+}
+
+.catalog-search-hint {
+  margin-top: 10px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
 /* FILTERS */
 .filters {
   display: flex;
@@ -423,6 +470,34 @@ button {
   color: #6b7280;
   padding: 40px 20px;
   grid-column: 1 / -1;
+}
+
+.empty-search {
+  background: linear-gradient(180deg, #ffffff 0%, #fbfcfb 100%);
+  border: 1px solid #e7ece6;
+  border-radius: 22px;
+  box-shadow: 0 12px 28px rgba(31, 41, 55, 0.06);
+}
+
+.empty-search h3 {
+  color: #1f2937;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.empty-search p {
+  max-width: 620px;
+  margin: 0 auto 10px;
+  line-height: 1.7;
+}
+
+.empty-search p:last-child {
+  margin-bottom: 0;
+}
+
+.empty-search a {
+  color: #2f7d32;
+  font-weight: 700;
 }
 
 /* MODAL */
@@ -970,6 +1045,15 @@ button {
     justify-content: flex-start;
     flex-wrap: nowrap;
     overflow-x: auto;
+  }
+
+  .catalog-search-wrap {
+    padding-top: 18px;
+  }
+
+  .catalog-search-card {
+    padding: 16px;
+    border-radius: 18px;
   }
 
   .filters button {

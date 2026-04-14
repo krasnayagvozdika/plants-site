@@ -2,6 +2,8 @@ const URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQC6o3gVUCO9cXGFdj-
 
 const catalog = document.getElementById("catalog");
 const filters = document.getElementById("filters");
+const searchInput = document.getElementById("catalog-search");
+const suggestionsList = document.getElementById("plant-suggestions");
 const modal = document.getElementById("modal");
 const modalBody = document.getElementById("modal-body");
 const modalContent = modal?.querySelector(".modal-content") || null;
@@ -16,6 +18,7 @@ const homeImage3 = document.getElementById("home-image-3");
 
 let plants = [];
 let currentCategory = "Все";
+let currentSearch = "";
 let lastFocusedElement = null;
 
 /* mobile menu */
@@ -71,6 +74,7 @@ async function loadData() {
       }))
       .filter((p) => p.name && p.image && p.category);
 
+    updateSuggestions();
     renderFilters();
     renderCatalog();
   } catch (error) {
@@ -226,6 +230,47 @@ function renderFilters() {
   });
 }
 
+function setupSearch() {
+  if (!searchInput) return;
+
+  updateSuggestions();
+
+  searchInput.addEventListener("input", (event) => {
+    currentSearch = event.target.value.trim().toLowerCase();
+    updateSuggestions();
+    renderCatalog();
+  });
+
+  searchInput.addEventListener("search", (event) => {
+    currentSearch = event.target.value.trim().toLowerCase();
+    updateSuggestions();
+    renderCatalog();
+  });
+
+  searchInput.addEventListener("change", (event) => {
+    currentSearch = event.target.value.trim().toLowerCase();
+    updateSuggestions();
+    renderCatalog();
+  });
+}
+
+function updateSuggestions() {
+  if (!suggestionsList) return;
+
+  const baseNames = [...new Set(plants.map((plant) => plant.name).filter(Boolean))].sort((a, b) =>
+    a.localeCompare(b, "ru")
+  );
+
+  const matchedNames = currentSearch
+    ? baseNames.filter((name) => name.toLowerCase().includes(currentSearch))
+    : baseNames;
+
+  suggestionsList.innerHTML = matchedNames
+    .slice(0, 12)
+    .map((name) => `<option value="${escapeHtml(name)}"></option>`)
+    .join("");
+}
+
 function renderCatalog() {
   if (!catalog) return;
 
@@ -235,8 +280,29 @@ function renderCatalog() {
     filtered = plants.filter((p) => p.category === currentCategory);
   }
 
+  if (currentSearch) {
+    filtered = filtered.filter((p) => p.name.toLowerCase().includes(currentSearch));
+  }
+
   if (filtered.length === 0) {
-    catalog.innerHTML = `<div class="empty">Ничего не найдено</div>`;
+    const queryText = searchInput?.value.trim();
+
+    catalog.innerHTML = `
+      <div class="empty empty-search">
+        <h3>Ничего не найдено</h3>
+        <p>
+          ${
+            queryText
+              ? `По запросу «${escapeHtml(queryText)}» в каталоге сейчас нет совпадений.`
+              : "По выбранным параметрам в каталоге сейчас нет совпадений."
+          }
+        </p>
+        <p>
+          Можно уточнить наличие и ассортимент в магазине по телефону
+          <a href="tel:+375232561934">8 (0232) 56-19-34</a>.
+        </p>
+      </div>
+    `;
     return;
   }
 
@@ -374,6 +440,8 @@ if (modal) {
     }
   });
 }
+
+setupSearch();
 
 if (modalCloseButton) {
   modalCloseButton.addEventListener("click", closeModal);
