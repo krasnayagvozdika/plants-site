@@ -516,7 +516,7 @@ function renderCatalog() {
           <div class="card-content">
             <h3>${escapeHtml(p.name)}</h3>
             <div class="meta">${escapeHtml(p.category)} · ${escapeHtml(typeLabel)}</div>
-            ${p.price ? `<div class="price">${escapeHtml(p.price)} Br</div>` : ""}
+            ${p.price ? `<div class="price">Цена от ${escapeHtml(p.price)} Br</div>` : ""}
           </div>
         </article>
       `;
@@ -568,7 +568,7 @@ function openCard(p) {
         </div>
 
         <h2 class="modal-title" id="modal-title">${escapeHtml(p.name)}</h2>
-        <div class="modal-price">${p.price ? `${escapeHtml(p.price)} Br` : "Цена по запросу"}</div>
+        <div class="modal-price">${p.price ? `Цена от ${escapeHtml(p.price)} Br` : "Цена по запросу"}</div>
 
         <div class="modal-info-grid">
           <div class="modal-info-item">
