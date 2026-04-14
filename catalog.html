@@ -44,7 +44,7 @@
     </div>
   </section>
 
-  <section class="catalog-search-wrap container">
+  <section id="catalog-search-panel" class="catalog-search-panel" aria-hidden="true">
     <div class="catalog-search-card">
       <label class="catalog-search-label" for="catalog-search">Поиск по названию</label>
       <div class="catalog-search-box">
@@ -63,6 +63,18 @@
       </div>
     </div>
   </section>
+
+  <button
+    id="catalog-search-fab"
+    class="catalog-search-fab"
+    type="button"
+    aria-label="Открыть поиск по каталогу"
+    aria-expanded="false"
+    aria-controls="catalog-search-panel"
+  >
+    <span class="catalog-search-fab-icon" aria-hidden="true">⌕</span>
+    <span class="catalog-search-fab-text">Поиск</span>
+  </button>
 
   <section class="filters container" id="filters"></section>
 

@@ -322,8 +322,22 @@ button {
 }
 
 /* CATALOG SEARCH */
-.catalog-search-wrap {
-  padding-top: 24px;
+.catalog-search-panel {
+  position: fixed;
+  right: 24px;
+  bottom: 96px;
+  z-index: 1100;
+  width: min(92vw, 560px);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(18px) scale(0.98);
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+
+.catalog-search-panel.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
 }
 
 .catalog-search-card {
@@ -331,9 +345,7 @@ button {
   border: 1px solid #e7ece6;
   border-radius: 22px;
   padding: 20px 22px;
-  box-shadow: 0 12px 28px rgba(31, 41, 55, 0.06);
-  max-width: 760px;
-  margin: 0 auto;
+  box-shadow: 0 18px 42px rgba(31, 41, 55, 0.16);
 }
 
 .catalog-search-label {
@@ -346,7 +358,6 @@ button {
 
 .catalog-search-box {
   position: relative;
-  max-width: 680px;
 }
 
 .catalog-search-input {
@@ -440,6 +451,42 @@ button {
   background: rgba(47, 125, 50, 0.10);
   color: #1c5f26;
   transform: translateX(2px);
+}
+
+.catalog-search-fab {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1110;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 56px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: #2f7d32;
+  color: #ffffff;
+  box-shadow: 0 16px 30px rgba(47, 125, 50, 0.28);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+}
+
+.catalog-search-fab:hover {
+  transform: translateY(-2px);
+  background: #256428;
+}
+
+.catalog-search-fab.active {
+  background: #1f2937;
+  box-shadow: 0 16px 30px rgba(31, 41, 55, 0.24);
+}
+
+.catalog-search-fab-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.catalog-search-fab-text {
+  font-weight: 700;
 }
 
 /* FILTERS */
@@ -1125,10 +1172,6 @@ button {
     overflow-x: auto;
   }
 
-  .catalog-search-wrap {
-    padding-top: 18px;
-  }
-
   .catalog-search-card {
     padding: 16px;
     border-radius: 18px;
@@ -1143,6 +1186,20 @@ button {
     right: 6px;
     width: 44px;
     height: 44px;
+  }
+
+  .catalog-search-panel {
+    right: 12px;
+    left: 12px;
+    bottom: 88px;
+    width: auto;
+  }
+
+  .catalog-search-fab {
+    right: 12px;
+    bottom: 12px;
+    min-height: 52px;
+    padding: 0 16px;
   }
 
   .catalog-search-box,

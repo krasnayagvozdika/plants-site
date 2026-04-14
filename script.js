@@ -2,6 +2,8 @@ const URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQC6o3gVUCO9cXGFdj-
 
 const catalog = document.getElementById("catalog");
 const filters = document.getElementById("filters");
+const searchPanel = document.getElementById("catalog-search-panel");
+const searchFab = document.getElementById("catalog-search-fab");
 const searchInput = document.getElementById("catalog-search");
 const searchClearButton = document.getElementById("catalog-search-clear");
 const suggestionsList = document.getElementById("plant-suggestions");
@@ -293,6 +295,15 @@ function setupSearch() {
     renderCatalog();
     searchInput.focus();
   });
+
+  searchFab?.addEventListener("click", () => {
+    if (searchPanel?.classList.contains("open")) {
+      closeSearchPanel();
+      return;
+    }
+
+    openSearchPanel();
+  });
 }
 
 function applySearchValue(value) {
@@ -390,6 +401,31 @@ function updateSearchClearButton() {
   const hasValue = searchInput.value.trim().length > 0;
   searchClearButton.classList.toggle("visible", hasValue);
   searchClearButton.disabled = !hasValue;
+}
+
+function openSearchPanel() {
+  if (!searchPanel || !searchFab) return;
+
+  searchPanel.classList.add("open");
+  searchPanel.setAttribute("aria-hidden", "false");
+  searchFab.classList.add("active");
+  searchFab.setAttribute("aria-expanded", "true");
+  searchFab.setAttribute("aria-label", "Закрыть поиск по каталогу");
+
+  requestAnimationFrame(() => {
+    searchInput?.focus();
+  });
+}
+
+function closeSearchPanel() {
+  if (!searchPanel || !searchFab) return;
+
+  searchPanel.classList.remove("open");
+  searchPanel.setAttribute("aria-hidden", "true");
+  searchFab.classList.remove("active");
+  searchFab.setAttribute("aria-expanded", "false");
+  searchFab.setAttribute("aria-label", "Открыть поиск по каталогу");
+  hideSuggestions();
 }
 
 function renderCatalog() {
@@ -572,12 +608,24 @@ if (document && searchBox) {
   });
 }
 
+if (document && searchPanel && searchFab) {
+  document.addEventListener("click", (event) => {
+    const clickedInsidePanel = searchPanel.contains(event.target);
+    const clickedFab = searchFab.contains(event.target);
+
+    if (!clickedInsidePanel && !clickedFab) {
+      closeSearchPanel();
+    }
+  });
+}
+
 if (modalCloseButton) {
   modalCloseButton.addEventListener("click", closeModal);
 }
 
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
+    closeSearchPanel();
     closeModal();
   }
 
