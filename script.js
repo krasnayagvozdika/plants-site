@@ -4,6 +4,7 @@ const catalog = document.getElementById("catalog");
 const filters = document.getElementById("filters");
 const searchInput = document.getElementById("catalog-search");
 const suggestionsList = document.getElementById("plant-suggestions");
+const searchBox = searchInput?.closest(".catalog-search-box") || null;
 const modal = document.getElementById("modal");
 const modalBody = document.getElementById("modal-body");
 const modalContent = modal?.querySelector(".modal-content") || null;
@@ -20,6 +21,8 @@ let plants = [];
 let currentCategory = "Все";
 let currentSearch = "";
 let lastFocusedElement = null;
+let suggestionItems = [];
+let activeSuggestionIndex = -1;
 
 /* mobile menu */
 if (menuToggle && mainNav) {
@@ -236,51 +239,137 @@ function setupSearch() {
   updateSuggestions();
 
   searchInput.addEventListener("input", (event) => {
-    currentSearch = event.target.value.trim().toLowerCase();
-    if (currentSearch) {
-      currentCategory = "Все";
-      renderFilters();
-    }
-    updateSuggestions();
-    renderCatalog();
+    applySearchValue(event.target.value);
   });
 
   searchInput.addEventListener("search", (event) => {
-    currentSearch = event.target.value.trim().toLowerCase();
-    if (currentSearch) {
-      currentCategory = "Все";
-      renderFilters();
-    }
-    updateSuggestions();
-    renderCatalog();
+    applySearchValue(event.target.value);
   });
 
   searchInput.addEventListener("change", (event) => {
-    currentSearch = event.target.value.trim().toLowerCase();
-    if (currentSearch) {
-      currentCategory = "Все";
-      renderFilters();
-    }
+    applySearchValue(event.target.value);
+  });
+
+  searchInput.addEventListener("focus", () => {
     updateSuggestions();
-    renderCatalog();
+  });
+
+  searchInput.addEventListener("keydown", (event) => {
+    if (!suggestionItems.length) {
+      if (event.key === "Escape") hideSuggestions();
+      return;
+    }
+
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      activeSuggestionIndex = (activeSuggestionIndex + 1) % suggestionItems.length;
+      renderSuggestionList(suggestionItems);
+    }
+
+    if (event.key === "ArrowUp") {
+      event.preventDefault();
+      activeSuggestionIndex =
+        activeSuggestionIndex <= 0 ? suggestionItems.length - 1 : activeSuggestionIndex - 1;
+      renderSuggestionList(suggestionItems);
+    }
+
+    if (event.key === "Enter" && activeSuggestionIndex >= 0) {
+      event.preventDefault();
+      applySuggestion(suggestionItems[activeSuggestionIndex]);
+    }
+
+    if (event.key === "Escape") {
+      hideSuggestions();
+    }
   });
 }
 
+function applySearchValue(value) {
+  currentSearch = value.trim().toLowerCase();
+
+  if (currentSearch) {
+    currentCategory = "Все";
+    renderFilters();
+  }
+
+  updateSuggestions();
+  renderCatalog();
+}
+
 function updateSuggestions() {
-  if (!suggestionsList) return;
+  if (!suggestionsList || !searchInput) return;
 
   const baseNames = [...new Set(plants.map((plant) => plant.name).filter(Boolean))].sort((a, b) =>
     a.localeCompare(b, "ru")
   );
 
-  const matchedNames = currentSearch
-    ? baseNames.filter((name) => name.toLowerCase().includes(currentSearch))
+  const rawValue = searchInput.value.trim().toLowerCase();
+  const matchedNames = rawValue
+    ? baseNames.filter((name) => name.toLowerCase().includes(rawValue))
     : baseNames;
 
-  suggestionsList.innerHTML = matchedNames
-    .slice(0, 12)
-    .map((name) => `<option value="${escapeHtml(name)}"></option>`)
+  suggestionItems = matchedNames.slice(0, 8);
+  activeSuggestionIndex = suggestionItems.length ? 0 : -1;
+
+  renderSuggestionList(suggestionItems);
+}
+
+function renderSuggestionList(items) {
+  if (!suggestionsList || !searchInput) return;
+
+  if (items.length === 0 || !searchInput.value.trim()) {
+    hideSuggestions();
+    return;
+  }
+
+  suggestionsList.innerHTML = items
+    .map((name, index) => {
+      const isActive = index === activeSuggestionIndex;
+
+      return `
+        <button
+          class="search-suggestion${isActive ? " active" : ""}"
+          type="button"
+          role="option"
+          aria-selected="${isActive ? "true" : "false"}"
+          data-value="${escapeHtml(name)}"
+        >
+          ${escapeHtml(name)}
+        </button>
+      `;
+    })
     .join("");
+
+  suggestionsList.classList.add("open");
+  searchInput.setAttribute("aria-expanded", "true");
+
+  suggestionsList.querySelectorAll(".search-suggestion").forEach((button) => {
+    button.addEventListener("mousedown", (event) => {
+      event.preventDefault();
+      applySuggestion(button.dataset.value || "");
+    });
+  });
+}
+
+function applySuggestion(value) {
+  if (!searchInput) return;
+
+  searchInput.value = value;
+  currentSearch = value.trim().toLowerCase();
+  currentCategory = "Все";
+  renderFilters();
+  updateSuggestions();
+  renderCatalog();
+  hideSuggestions();
+}
+
+function hideSuggestions() {
+  if (!suggestionsList || !searchInput) return;
+
+  suggestionsList.classList.remove("open");
+  suggestionsList.innerHTML = "";
+  searchInput.setAttribute("aria-expanded", "false");
+  activeSuggestionIndex = -1;
 }
 
 function renderCatalog() {
@@ -454,6 +543,14 @@ if (modal) {
 }
 
 setupSearch();
+
+if (document && searchBox) {
+  document.addEventListener("click", (event) => {
+    if (!searchBox.contains(event.target)) {
+      hideSuggestions();
+    }
+  });
+}
 
 if (modalCloseButton) {
   modalCloseButton.addEventListener("click", closeModal);
