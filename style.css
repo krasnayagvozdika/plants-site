@@ -332,6 +332,8 @@ button {
   border-radius: 22px;
   padding: 20px 22px;
   box-shadow: 0 12px 28px rgba(31, 41, 55, 0.06);
+  max-width: 760px;
+  margin: 0 auto;
 }
 
 .catalog-search-label {
@@ -344,6 +346,7 @@ button {
 
 .catalog-search-box {
   position: relative;
+  max-width: 680px;
 }
 
 .catalog-search-input {
@@ -365,25 +368,21 @@ button {
   outline: none;
 }
 
-.catalog-search-hint {
-  margin-top: 10px;
-  color: #6b7280;
-  font-size: 14px;
-}
-
 .search-suggestions {
   display: none;
   position: absolute;
   top: calc(100% + 10px);
   left: 0;
-  right: 0;
+  width: 100%;
+  max-width: 680px;
   z-index: 20;
   padding: 8px;
   border-radius: 18px;
   border: 1px solid #e7ece6;
   background: rgba(255, 255, 255, 0.98);
-  box-shadow: 0 18px 36px rgba(31, 41, 55, 0.14);
+  box-shadow: 0 22px 40px rgba(31, 41, 55, 0.16);
   backdrop-filter: blur(10px);
+  transform-origin: top center;
 }
 
 .search-suggestions.open {
@@ -1097,6 +1096,11 @@ button {
   .catalog-search-card {
     padding: 16px;
     border-radius: 18px;
+  }
+
+  .catalog-search-box,
+  .search-suggestions {
+    max-width: none;
   }
 
   .filters button {
