@@ -98,6 +98,7 @@ button {
 .nav-link:focus-visible,
 .menu-toggle:focus-visible,
 .btn:focus-visible,
+.scroll-top-button:focus-visible,
 .catalog-search-input:focus-visible,
 .filters button:focus-visible,
 .modal-close:focus-visible,
@@ -486,6 +487,41 @@ button {
 
 .catalog-search-fab-text {
   font-weight: 700;
+}
+
+.scroll-top-button {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1090;
+  width: 52px;
+  height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(31, 41, 55, 0.92);
+  color: #ffffff;
+  box-shadow: 0 16px 30px rgba(31, 41, 55, 0.20);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(16px);
+  transition: opacity 0.22s ease, transform 0.22s ease, background 0.22s ease;
+}
+
+.scroll-top-button.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.scroll-top-button:hover {
+  background: #2f7d32;
+}
+
+.scroll-top-button span {
+  font-size: 22px;
+  line-height: 1;
 }
 
 /* FILTERS */
@@ -1205,6 +1241,13 @@ button {
     padding: 0 16px;
     width: 100%;
     justify-content: center;
+  }
+
+  .scroll-top-button {
+    right: 12px;
+    bottom: 12px;
+    width: 48px;
+    height: 48px;
   }
 
   .catalog-search-box,

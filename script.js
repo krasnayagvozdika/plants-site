@@ -26,6 +26,7 @@ let currentSearch = "";
 let lastFocusedElement = null;
 let suggestionItems = [];
 let activeSuggestionIndex = -1;
+let scrollTopButton = null;
 
 /* mobile menu */
 if (menuToggle && mainNav) {
@@ -417,6 +418,28 @@ function updateSearchClearButton() {
   searchClearButton.disabled = !hasValue;
 }
 
+function initScrollTopButton() {
+  scrollTopButton = document.createElement("button");
+  scrollTopButton.type = "button";
+  scrollTopButton.className = "scroll-top-button";
+  scrollTopButton.setAttribute("aria-label", "Наверх");
+  scrollTopButton.innerHTML = '<span aria-hidden="true">↑</span>';
+
+  scrollTopButton.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  document.body.appendChild(scrollTopButton);
+  updateScrollTopButton();
+}
+
+function updateScrollTopButton() {
+  if (!scrollTopButton) return;
+
+  const shouldShow = window.scrollY > 700;
+  scrollTopButton.classList.toggle("visible", shouldShow);
+}
+
 function openSearchPanel() {
   if (!searchPanel || !searchFab) return;
 
@@ -615,6 +638,7 @@ if (modal) {
 }
 
 setupSearch();
+initScrollTopButton();
 
 if (document && searchBox) {
   document.addEventListener("click", (event) => {
@@ -649,6 +673,8 @@ document.addEventListener("keydown", (e) => {
     trapFocus(e);
   }
 });
+
+window.addEventListener("scroll", updateScrollTopButton, { passive: true });
 
 function trapFocus(event) {
   if (!modal) return;
