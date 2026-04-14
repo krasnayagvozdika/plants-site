@@ -44,37 +44,41 @@
     </div>
   </section>
 
-  <section id="catalog-search-panel" class="catalog-search-panel" aria-hidden="true">
-    <div class="catalog-search-card">
-      <label class="catalog-search-label" for="catalog-search">Поиск по названию</label>
-      <div class="catalog-search-box">
-        <input
-          id="catalog-search"
-          class="catalog-search-input"
-          type="text"
-          placeholder="Например, туя, лаванда, хлорофитум"
-          autocomplete="off"
-          aria-autocomplete="list"
-          aria-expanded="false"
-          aria-controls="plant-suggestions"
-        >
-        <button id="catalog-search-clear" class="catalog-search-clear" type="button" aria-label="Очистить поиск">×</button>
-        <div id="plant-suggestions" class="search-suggestions" role="listbox" aria-label="Подсказки поиска"></div>
+  <section class="catalog-tools container">
+    <div class="catalog-tools-bar">
+      <button
+        id="catalog-search-fab"
+        class="catalog-search-fab"
+        type="button"
+        aria-label="Открыть поиск по каталогу"
+        aria-expanded="false"
+        aria-controls="catalog-search-panel"
+      >
+        <span class="catalog-search-fab-icon" aria-hidden="true">⌕</span>
+        <span class="catalog-search-fab-text">Поиск</span>
+      </button>
+    </div>
+
+    <div id="catalog-search-panel" class="catalog-search-panel" aria-hidden="true">
+      <div class="catalog-search-card">
+        <label class="catalog-search-label" for="catalog-search">Поиск по названию</label>
+        <div class="catalog-search-box">
+          <input
+            id="catalog-search"
+            class="catalog-search-input"
+            type="text"
+            placeholder="Например, туя, лаванда, хлорофитум"
+            autocomplete="off"
+            aria-autocomplete="list"
+            aria-expanded="false"
+            aria-controls="plant-suggestions"
+          >
+          <button id="catalog-search-clear" class="catalog-search-clear" type="button" aria-label="Очистить поиск">×</button>
+          <div id="plant-suggestions" class="search-suggestions" role="listbox" aria-label="Подсказки поиска"></div>
+        </div>
       </div>
     </div>
   </section>
-
-  <button
-    id="catalog-search-fab"
-    class="catalog-search-fab"
-    type="button"
-    aria-label="Открыть поиск по каталогу"
-    aria-expanded="false"
-    aria-controls="catalog-search-panel"
-  >
-    <span class="catalog-search-fab-icon" aria-hidden="true">⌕</span>
-    <span class="catalog-search-fab-text">Поиск</span>
-  </button>
 
   <section class="filters container" id="filters"></section>
 

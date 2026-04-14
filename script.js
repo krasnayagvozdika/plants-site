@@ -228,6 +228,7 @@ function renderFilters() {
 
     btn.addEventListener("click", () => {
       resetSearch();
+      closeSearchPanel();
       currentCategory = cat;
       renderFilters();
       renderCatalog();
