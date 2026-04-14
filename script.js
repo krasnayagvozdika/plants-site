@@ -294,12 +294,51 @@ function openCard(p) {
   lastFocusedElement = document.activeElement;
 
   modalBody.innerHTML = `
-    <img class="modal-image" src="images/${escapeHtml(p.image)}" alt="${escapeHtml(p.name)}">
-    <h2 class="modal-title" id="modal-title">${escapeHtml(p.name)}</h2>
-    <div class="modal-meta">${escapeHtml(p.category)} · ${escapeHtml(typeLabel)}</div>
-    ${p.price ? `<div class="modal-price">${escapeHtml(p.price)} Br</div>` : `<div class="modal-price">Цена по запросу</div>`}
-    ${p.size ? `<div class="modal-size">Размер: ${escapeHtml(p.size)}</div>` : ""}
-    ${p.description ? `<div class="modal-description">${escapeHtml(p.description)}</div>` : ""}
+    <article class="plant-modal-card">
+      <div class="modal-image-shell">
+        <img class="modal-image" src="images/${escapeHtml(p.image)}" alt="${escapeHtml(p.name)}">
+      </div>
+
+      <div class="modal-details">
+        <div class="modal-tags">
+          <span class="modal-tag">${escapeHtml(p.category)}</span>
+          <span class="modal-tag modal-tag-soft">${escapeHtml(typeLabel)}</span>
+        </div>
+
+        <h2 class="modal-title" id="modal-title">${escapeHtml(p.name)}</h2>
+        <div class="modal-price">${p.price ? `${escapeHtml(p.price)} Br` : "Цена по запросу"}</div>
+
+        <div class="modal-info-grid">
+          <div class="modal-info-item">
+            <span class="modal-info-label">Категория</span>
+            <span class="modal-info-value">${escapeHtml(p.category)}</span>
+          </div>
+          <div class="modal-info-item">
+            <span class="modal-info-label">Формат</span>
+            <span class="modal-info-value">${escapeHtml(typeLabel)}</span>
+          </div>
+          ${
+            p.size
+              ? `<div class="modal-info-item">
+                  <span class="modal-info-label">Размер</span>
+                  <span class="modal-info-value">${escapeHtml(p.size)}</span>
+                </div>`
+              : ""
+          }
+        </div>
+
+        <div class="modal-description-block">
+          <h3>Описание</h3>
+          <div class="modal-description">
+            ${
+              p.description
+                ? escapeHtml(p.description)
+                : "Описание скоро появится. Пока можно ориентироваться по фотографии и уточнять наличие и детали по телефону."
+            }
+          </div>
+        </div>
+      </div>
+    </article>
   `;
 
   modal.classList.add("open");
