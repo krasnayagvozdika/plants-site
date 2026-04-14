@@ -282,6 +282,7 @@ function renderCatalog() {
 function getTypeLabel(type) {
   if (type === "pot") return "в горшке";
   if (type === "ground") return "в грунте";
+  if (type === "cut") return "под срезку";
   if (!type) return "тип не указан";
   return type;
 }
