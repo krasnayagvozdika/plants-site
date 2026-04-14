@@ -323,21 +323,16 @@ button {
 
 /* CATALOG SEARCH */
 .catalog-search-panel {
+  display: none;
   position: fixed;
   right: 24px;
   bottom: 96px;
   z-index: 1100;
   width: min(92vw, 560px);
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(18px) scale(0.98);
-  transition: opacity 0.22s ease, transform 0.22s ease;
 }
 
 .catalog-search-panel.open {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0) scale(1);
+  display: block;
 }
 
 .catalog-search-card {

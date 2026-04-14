@@ -516,6 +516,8 @@ function openCard(p) {
 
   const typeLabel = getTypeLabel(p.type);
   lastFocusedElement = document.activeElement;
+  closeSearchPanel();
+  searchInput?.blur();
 
   modalBody.innerHTML = `
     <article class="plant-modal-card">
