@@ -352,13 +352,15 @@ button {
 .catalog-search-input {
   width: 100%;
   min-height: 54px;
-  padding: 14px 18px;
+  padding: 14px 56px 14px 18px;
   border-radius: 16px;
   border: 1px solid #d6ddd4;
   background: #f9fbf8;
   color: #1f2937;
   font: inherit;
   transition: border-color 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .catalog-search-input:focus {
@@ -366,6 +368,40 @@ button {
   box-shadow: 0 0 0 4px rgba(47, 125, 50, 0.10);
   background: #ffffff;
   outline: none;
+}
+
+.catalog-search-input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.catalog-search-clear {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  color: #6b7280;
+  font-size: 24px;
+  line-height: 1;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-50%);
+  transition: background 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+}
+
+.catalog-search-clear.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.catalog-search-clear:hover {
+  background: rgba(47, 125, 50, 0.10);
+  color: #1c5f26;
 }
 
 .search-suggestions {
@@ -1096,6 +1132,17 @@ button {
   .catalog-search-card {
     padding: 16px;
     border-radius: 18px;
+  }
+
+  .catalog-search-input {
+    min-height: 56px;
+    padding-right: 60px;
+  }
+
+  .catalog-search-clear {
+    right: 6px;
+    width: 44px;
+    height: 44px;
   }
 
   .catalog-search-box,

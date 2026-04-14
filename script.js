@@ -3,6 +3,7 @@ const URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQC6o3gVUCO9cXGFdj-
 const catalog = document.getElementById("catalog");
 const filters = document.getElementById("filters");
 const searchInput = document.getElementById("catalog-search");
+const searchClearButton = document.getElementById("catalog-search-clear");
 const suggestionsList = document.getElementById("plant-suggestions");
 const searchBox = searchInput?.closest(".catalog-search-box") || null;
 const modal = document.getElementById("modal");
@@ -237,6 +238,7 @@ function setupSearch() {
   if (!searchInput) return;
 
   updateSuggestions();
+  updateSearchClearButton();
 
   searchInput.addEventListener("input", (event) => {
     applySearchValue(event.target.value);
@@ -282,6 +284,15 @@ function setupSearch() {
       hideSuggestions();
     }
   });
+
+  searchClearButton?.addEventListener("click", () => {
+    searchInput.value = "";
+    currentSearch = "";
+    hideSuggestions();
+    updateSearchClearButton();
+    renderCatalog();
+    searchInput.focus();
+  });
 }
 
 function applySearchValue(value) {
@@ -293,6 +304,7 @@ function applySearchValue(value) {
   }
 
   updateSuggestions();
+  updateSearchClearButton();
   renderCatalog();
 }
 
@@ -370,6 +382,14 @@ function hideSuggestions() {
   suggestionsList.innerHTML = "";
   searchInput.setAttribute("aria-expanded", "false");
   activeSuggestionIndex = -1;
+}
+
+function updateSearchClearButton() {
+  if (!searchClearButton || !searchInput) return;
+
+  const hasValue = searchInput.value.trim().length > 0;
+  searchClearButton.classList.toggle("visible", hasValue);
+  searchClearButton.disabled = !hasValue;
 }
 
 function renderCatalog() {
