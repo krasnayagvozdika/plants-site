@@ -7,11 +7,11 @@ const searchFab = document.getElementById("catalog-search-fab");
 const searchInput = document.getElementById("catalog-search");
 const searchClearButton = document.getElementById("catalog-search-clear");
 const suggestionsList = document.getElementById("plant-suggestions");
-const searchBox = searchInput?.closest(".catalog-search-box") || null;
+const searchBox = searchInput ? searchInput.closest(".catalog-search-box") : null;
 const modal = document.getElementById("modal");
 const modalBody = document.getElementById("modal-body");
-const modalContent = modal?.querySelector(".modal-content") || null;
-const modalCloseButton = modal?.querySelector(".modal-close") || null;
+const modalContent = modal ? modal.querySelector(".modal-content") : null;
+const modalCloseButton = modal ? modal.querySelector(".modal-close") : null;
 
 const menuToggle = document.getElementById("menu-toggle");
 const mainNav = document.getElementById("main-nav");
@@ -290,23 +290,27 @@ function setupSearch() {
     }
   });
 
-  searchClearButton?.addEventListener("click", () => {
-    searchInput.value = "";
-    currentSearch = "";
-    hideSuggestions();
-    updateSearchClearButton();
-    renderCatalog();
-    searchInput.focus();
-  });
+  if (searchClearButton) {
+    searchClearButton.addEventListener("click", () => {
+      searchInput.value = "";
+      currentSearch = "";
+      hideSuggestions();
+      updateSearchClearButton();
+      renderCatalog();
+      searchInput.focus();
+    });
+  }
 
-  searchFab?.addEventListener("click", () => {
-    if (searchPanel?.classList.contains("open")) {
-      closeSearchPanel();
-      return;
-    }
+  if (searchFab) {
+    searchFab.addEventListener("click", () => {
+      if (searchPanel && searchPanel.classList.contains("open")) {
+        closeSearchPanel();
+        return;
+      }
 
-    openSearchPanel();
-  });
+      openSearchPanel();
+    });
+  }
 }
 
 function resetSearch() {
@@ -450,7 +454,9 @@ function openSearchPanel() {
   searchFab.setAttribute("aria-label", "Закрыть поиск по каталогу");
 
   requestAnimationFrame(() => {
-    searchInput?.focus();
+    if (searchInput) {
+      searchInput.focus();
+    }
   });
 }
 
@@ -479,7 +485,7 @@ function renderCatalog() {
   }
 
   if (filtered.length === 0) {
-    const queryText = searchInput?.value.trim();
+    const queryText = searchInput ? searchInput.value.trim() : "";
 
     catalog.innerHTML = `
       <div class="empty empty-search">
@@ -553,7 +559,9 @@ function openCard(p) {
   const typeLabel = getTypeLabel(p.type);
   lastFocusedElement = document.activeElement;
   closeSearchPanel();
-  searchInput?.blur();
+  if (searchInput) {
+    searchInput.blur();
+  }
 
   modalBody.innerHTML = `
     <article class="plant-modal-card">
@@ -606,7 +614,9 @@ function openCard(p) {
   modal.classList.add("open");
   modal.setAttribute("aria-hidden", "false");
   document.body.style.overflow = "hidden";
-  modalCloseButton?.focus();
+  if (modalCloseButton) {
+    modalCloseButton.focus();
+  }
 }
 
 function closeModal() {
@@ -622,11 +632,11 @@ function closeModal() {
 
 function escapeHtml(str = "") {
   return String(str)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 if (modal) {
@@ -669,7 +679,7 @@ document.addEventListener("keydown", (e) => {
     closeModal();
   }
 
-  if (e.key === "Tab" && modal?.classList.contains("open")) {
+  if (e.key === "Tab" && modal && modal.classList.contains("open")) {
     trapFocus(e);
   }
 });
@@ -684,7 +694,9 @@ function trapFocus(event) {
   );
 
   if (focusableElements.length === 0) {
-    modalContent?.focus();
+    if (modalContent) {
+      modalContent.focus();
+    }
     event.preventDefault();
     return;
   }
