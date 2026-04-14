@@ -227,6 +227,7 @@ function renderFilters() {
     }
 
     btn.addEventListener("click", () => {
+      resetSearch();
       currentCategory = cat;
       renderFilters();
       renderCatalog();
@@ -304,6 +305,17 @@ function setupSearch() {
 
     openSearchPanel();
   });
+}
+
+function resetSearch() {
+  currentSearch = "";
+
+  if (searchInput) {
+    searchInput.value = "";
+  }
+
+  hideSuggestions();
+  updateSearchClearButton();
 }
 
 function applySearchValue(value) {
