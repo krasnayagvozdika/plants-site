@@ -237,18 +237,30 @@ function setupSearch() {
 
   searchInput.addEventListener("input", (event) => {
     currentSearch = event.target.value.trim().toLowerCase();
+    if (currentSearch) {
+      currentCategory = "Все";
+      renderFilters();
+    }
     updateSuggestions();
     renderCatalog();
   });
 
   searchInput.addEventListener("search", (event) => {
     currentSearch = event.target.value.trim().toLowerCase();
+    if (currentSearch) {
+      currentCategory = "Все";
+      renderFilters();
+    }
     updateSuggestions();
     renderCatalog();
   });
 
   searchInput.addEventListener("change", (event) => {
     currentSearch = event.target.value.trim().toLowerCase();
+    if (currentSearch) {
+      currentCategory = "Все";
+      renderFilters();
+    }
     updateSuggestions();
     renderCatalog();
   });
@@ -276,7 +288,7 @@ function renderCatalog() {
 
   let filtered = plants;
 
-  if (currentCategory !== "Все") {
+  if (!currentSearch && currentCategory !== "Все") {
     filtered = plants.filter((p) => p.category === currentCategory);
   }
 
