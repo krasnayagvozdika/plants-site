@@ -383,7 +383,8 @@ function applySuggestion(value) {
   renderFilters();
   updateSuggestions();
   renderCatalog();
-  hideSuggestions();
+  closeSearchPanel();
+  searchInput.blur();
 }
 
 function hideSuggestions() {
