@@ -1198,11 +1198,16 @@ button {
   .modal-info-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
+    justify-items: center;
   }
 
   .modal-info-item {
+    width: 100%;
+    max-width: 180px;
     padding: 12px;
     border-radius: 14px;
+    align-items: center;
+    text-align: center;
   }
 
   .modal-info-value {
