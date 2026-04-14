@@ -407,6 +407,9 @@ button {
 /* CARD */
 .card {
   background: #ffffff;
+  width: 100%;
+  max-width: 320px;
+  justify-self: center;
   border-radius: 14px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
@@ -1069,6 +1072,10 @@ button {
 
   .card img {
     height: 240px;
+  }
+
+  .card {
+    max-width: none;
   }
 
   .modal {
