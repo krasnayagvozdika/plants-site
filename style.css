@@ -924,6 +924,10 @@ button {
   display: none;
 }
 
+.admin-dropzone input[type="file"] {
+  display: none;
+}
+
 .admin-actions {
   display: flex;
   gap: 12px;

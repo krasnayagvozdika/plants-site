@@ -274,7 +274,7 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
                 <div class="admin-dropzone-title">Фото растения</div>
                 <div class="admin-dropzone-text">Перетащите фото сюда или нажмите кнопку выбора файла.</div>
                 <p><button class="btn btn-secondary" type="button" data-select-image>Выбрать файл</button></p>
-                <input type="file" name="image" accept="image/jpeg,image/png,image/webp">
+                <input type="file" name="image" accept="image/jpeg,image/png,image/webp" aria-label="Выбрать файл изображения">
 
                 <div class="admin-preview">
                   <?php $previewImage = $editingItem['image'] ?? ''; ?>
@@ -301,9 +301,6 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
             <div class="content-block admin-modal-block">
               <div class="admin-modal-head">
                 <h2>Категории</h2>
-                <?php if (!$categoryEdit): ?>
-                  <a class="btn btn-primary" href="/admin/index.php?category_create=1">Добавить категорию</a>
-                <?php endif; ?>
               </div>
               <form method="post" class="admin-category-form">
                 <input type="hidden" name="action" value="category_save">
