@@ -874,6 +874,117 @@ button {
   line-height: 1.7;
 }
 
+.admin-toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.admin-search {
+  width: 100%;
+  max-width: 360px;
+}
+
+.admin-form-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.9fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.admin-form-fields {
+  display: grid;
+  gap: 14px;
+}
+
+.admin-form-fields label {
+  display: block;
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.admin-form-fields input[type="file"] {
+  display: none;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.admin-dropzone {
+  border: 2px dashed #b8c7b5;
+  border-radius: 18px;
+  padding: 18px;
+  background: linear-gradient(180deg, #fbfcfb 0%, #f2f7f1 100%);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.admin-dropzone:hover,
+.admin-dropzone.is-dragover {
+  border-color: #2f7d32;
+  background: linear-gradient(180deg, #f6fbf6 0%, #edf6ec 100%);
+  transform: translateY(-1px);
+}
+
+.admin-dropzone-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 6px;
+}
+
+.admin-dropzone-text {
+  color: #4b5563;
+  margin-bottom: 14px;
+}
+
+.admin-preview {
+  background: #ffffff;
+  border: 1px solid #e7ece6;
+  border-radius: 16px;
+  padding: 12px;
+}
+
+.admin-preview img {
+  width: 100%;
+  max-height: 320px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.admin-preview p {
+  margin: 0;
+  color: #4b5563;
+  word-break: break-word;
+}
+
+.admin-list {
+  display: grid;
+  gap: 14px;
+}
+
+.admin-item-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.admin-item-thumb {
+  width: 100%;
+  max-width: 180px;
+  border-radius: 12px;
+  border: 1px solid #e7ece6;
+  margin-bottom: 10px;
+}
+
 .info-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1340,6 +1451,14 @@ button {
 
   .content-block h2 {
     font-size: 20px;
+  }
+
+  .admin-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-search {
+    max-width: none;
   }
 
   .about-text p {
