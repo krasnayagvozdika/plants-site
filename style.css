@@ -876,11 +876,10 @@ button {
 
 .admin-toolbar {
   display: flex;
-  justify-content: flex-start;
+  flex-direction: column;
+  align-items: stretch;
   gap: 16px;
-  align-items: center;
   margin-top: 24px;
-  flex-wrap: wrap;
 }
 
 .admin-toolbar-actions {
@@ -891,11 +890,11 @@ button {
 }
 
 .admin-toolbar-actions-left {
-  order: -1;
+  order: 0;
 }
 
 .admin-toolbar-actions-right {
-  margin-left: auto;
+  width: 100%;
 }
 
 .admin-search {
@@ -1047,6 +1046,15 @@ button {
   padding-top: 0;
 }
 
+.admin-modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
 .admin-list-item.is-hidden,
 .admin-list-item[hidden] {
   display: none !important;
@@ -1073,6 +1081,7 @@ button {
 .admin-category-form {
   display: grid;
   gap: 14px;
+  margin-bottom: 18px;
 }
 
 .admin-category-modal-content {
@@ -1560,7 +1569,7 @@ button {
   }
 
   .admin-toolbar-actions-right {
-    margin-left: 0;
+    width: 100%;
   }
 
   .admin-list-item {
@@ -1579,6 +1588,10 @@ button {
 
   .admin-category-item {
     flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-modal-head {
     align-items: stretch;
   }
 

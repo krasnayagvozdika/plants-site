@@ -135,7 +135,6 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
         <div class="page-intro">
           <span class="page-kicker">Администрирование</span>
           <h1 class="page-title">Каталог растений</h1>
-          <p class="page-lead">Управление локальным каталогом: товары хранятся в `data/catalog.json`, фотографии в `images/catalog/`.</p>
         </div>
 
         <div class="info-grid">
@@ -165,7 +164,7 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
           <div class="admin-toolbar">
             <div class="admin-toolbar-actions admin-toolbar-actions-left">
               <a class="btn btn-primary" href="/admin/index.php?create=1">Добавить позицию</a>
-              <a class="btn btn-secondary" href="/admin/index.php?category_create=1">Добавить категорию</a>
+              <a class="btn btn-secondary" href="/admin/index.php?category_create=1">Категории</a>
             </div>
             <h2>Текущие позиции</h2>
             <div class="admin-toolbar-actions admin-toolbar-actions-right">
@@ -296,25 +295,16 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
           </div>
         </div>
 
-        <div class="content-block">
-          <div class="admin-toolbar">
-            <h2>Категории</h2>
-          </div>
-          <div class="admin-categories-list">
-            <?php foreach ($categories as $category): ?>
-              <article class="info-item admin-category-item">
-                <div class="admin-category-name"><?= app_h($category) ?></div>
-                <a class="btn btn-secondary" href="/admin/index.php?category_edit=<?= urlencode($category) ?>">Редактировать</a>
-              </article>
-            <?php endforeach; ?>
-          </div>
-        </div>
-
         <div id="admin-category-modal" class="modal<?= $isCategoryModalOpen ? ' open' : '' ?>" aria-hidden="<?= $isCategoryModalOpen ? 'false' : 'true' ?>">
           <div class="modal-content admin-modal-content admin-category-modal-content" tabindex="-1">
             <a class="modal-close" href="/admin/index.php" aria-label="Закрыть">×</a>
             <div class="content-block admin-modal-block">
-              <h2><?= $categoryEdit !== '' ? 'Редактировать категорию' : 'Добавить категорию' ?></h2>
+              <div class="admin-modal-head">
+                <h2>Категории</h2>
+                <?php if (!$categoryEdit): ?>
+                  <a class="btn btn-primary" href="/admin/index.php?category_create=1">Добавить категорию</a>
+                <?php endif; ?>
+              </div>
               <form method="post" class="admin-category-form">
                 <input type="hidden" name="action" value="category_save">
                 <input type="hidden" name="old_category" value="<?= app_h($categoryEdit) ?>">
@@ -328,10 +318,18 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
                   >
                 </label>
                 <div class="admin-actions">
-                  <button class="btn btn-primary" type="submit">Сохранить категорию</button>
+                  <button class="btn btn-primary" type="submit"><?= $categoryEdit !== '' ? 'Сохранить категорию' : 'Добавить категорию' ?></button>
                   <a class="btn btn-secondary" href="/admin/index.php">Отмена</a>
                 </div>
               </form>
+              <div class="admin-categories-list">
+                <?php foreach ($categories as $category): ?>
+                  <article class="info-item admin-category-item">
+                    <div class="admin-category-name"><?= app_h($category) ?></div>
+                    <a class="btn btn-secondary" href="/admin/index.php?category_edit=<?= urlencode($category) ?>">Редактировать</a>
+                  </article>
+                <?php endforeach; ?>
+              </div>
             </div>
           </div>
         </div>
