@@ -137,7 +137,7 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
           <h1 class="page-title">Каталог растений</h1>
         </div>
 
-        <div class="info-grid">
+        <div class="info-grid admin-summary-grid">
           <article class="info-item">
             <h2>Позиций</h2>
             <p><?= app_h((string) count($items)) ?></p>

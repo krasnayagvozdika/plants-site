@@ -878,8 +878,8 @@ button {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 16px;
-  margin-top: 24px;
+  gap: 12px;
+  margin-top: 16px;
 }
 
 .admin-toolbar-actions {
@@ -899,7 +899,7 @@ button {
 
 .admin-search {
   width: 100%;
-  max-width: 360px;
+  max-width: 320px;
 }
 
 .admin-form-grid {
@@ -1051,7 +1051,7 @@ button {
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
   flex-wrap: wrap;
 }
 
@@ -1081,11 +1081,30 @@ button {
 .admin-category-form {
   display: grid;
   gap: 14px;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
 }
 
 .admin-category-modal-content {
   max-width: 560px;
+}
+
+.admin-summary-grid {
+  gap: 12px;
+}
+
+.admin-summary-grid .info-item {
+  padding: 12px 14px;
+  border-radius: 14px;
+}
+
+.admin-summary-grid .info-item h2 {
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+
+.admin-summary-grid .info-item p {
+  font-size: 14px;
+  line-height: 1.4;
 }
 
 .info-grid {
