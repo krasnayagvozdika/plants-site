@@ -66,7 +66,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       items.forEach((item) => {
         const haystack = `${item.dataset.name || ""} ${item.dataset.category || ""}`.toLowerCase();
-        item.hidden = query !== "" && !haystack.includes(query);
+        const shouldHide = query !== "" && !haystack.includes(query);
+        item.hidden = shouldHide;
+        item.classList.toggle("is-hidden", shouldHide);
       });
     });
   }

@@ -10,6 +10,8 @@ $message = '';
 $error = '';
 $editingId = isset($_GET['edit']) ? trim((string) $_GET['edit']) : '';
 $editingItem = $editingId !== '' ? catalog_repository_find_item($catalog, $editingId) : null;
+$isCreateMode = isset($_GET['create']);
+$isFormOpen = $editingItem !== null || $isCreateMode || $error !== '';
 $categories = [];
 foreach ($items as $item) {
     $category = trim((string) ($item['category'] ?? ''));
@@ -121,7 +123,7 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
           </article>
           <article class="info-item">
             <h2>Обновлено</h2>
-            <p><?= app_h((string) ($catalog['updated_at'] ?? '')) ?></p>
+            <p><?= app_h(app_format_admin_datetime((string) ($catalog['updated_at'] ?? ''))) ?></p>
           </article>
         </div>
 
@@ -138,8 +140,56 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
         <?php endif; ?>
 
         <div class="content-block">
-          <h2><?= $editingItem ? 'Редактировать позицию' : 'Добавить позицию' ?></h2>
-          <form method="post" enctype="multipart/form-data" class="admin-form-grid">
+          <div class="admin-toolbar">
+            <h2>Текущие позиции</h2>
+            <div class="admin-toolbar-actions">
+              <input class="catalog-search-input admin-search" type="search" placeholder="Поиск по названию или категории" data-admin-search>
+              <a class="btn btn-primary" href="/admin/index.php?create=1">Добавить позицию</a>
+            </div>
+          </div>
+          <?php if (!$items): ?>
+            <p>Каталог пока пуст.</p>
+          <?php else: ?>
+            <div class="admin-list">
+              <?php foreach ($items as $item): ?>
+                <article
+                  class="info-item admin-list-item"
+                  data-admin-item
+                  data-name="<?= app_h($item['name'] ?? '') ?>"
+                  data-category="<?= app_h($item['category'] ?? '') ?>"
+                >
+                  <?php if (!empty($item['image'])): ?>
+                    <img class="admin-item-thumb" src="/<?= app_h(ltrim($item['image'], '/')) ?>" alt="<?= app_h($item['name'] ?? '') ?>">
+                  <?php endif; ?>
+                  <div class="admin-item-main">
+                    <h2><?= app_h($item['name'] ?? '') ?></h2>
+                    <p>ID: <?= app_h($item['id'] ?? '') ?> · <?= app_h($item['category'] ?? '') ?></p>
+                    <p>
+                      <?= app_h($item['price'] ?? '') !== '' ? 'Цена: ' . app_h($item['price'] ?? '') . ' Br' : 'Цена не указана' ?>
+                      ·
+                      <?= app_h($types[$item['type'] ?? ''] ?? 'тип не указан') ?>
+                    </p>
+                  </div>
+                  <div class="admin-item-actions">
+                    <a class="btn btn-secondary" href="/admin/index.php?edit=<?= app_h($item['id'] ?? '') ?>">Редактировать</a>
+                    <form method="post" onsubmit="return confirm('Удалить эту позицию?');">
+                      <input type="hidden" name="action" value="delete">
+                      <input type="hidden" name="id" value="<?= app_h($item['id'] ?? '') ?>">
+                      <button class="btn btn-secondary" type="submit">Удалить</button>
+                    </form>
+                  </div>
+                </article>
+              <?php endforeach; ?>
+            </div>
+          <?php endif; ?>
+        </div>
+
+        <div id="admin-form-modal" class="modal<?= $isFormOpen ? ' open' : '' ?>" aria-hidden="<?= $isFormOpen ? 'false' : 'true' ?>">
+          <div class="modal-content admin-modal-content" tabindex="-1">
+            <a class="modal-close" href="/admin/index.php" aria-label="Закрыть">×</a>
+            <div class="content-block admin-modal-block">
+              <h2><?= $editingItem ? 'Редактировать позицию' : 'Добавить позицию' ?></h2>
+              <form method="post" enctype="multipart/form-data" class="admin-form-grid">
             <div class="admin-form-fields">
               <input type="hidden" name="action" value="save">
               <input type="hidden" name="id" value="<?= app_h($editingItem['id'] ?? '') ?>">
@@ -215,49 +265,9 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
                 </div>
               </div>
             </div>
-          </form>
-        </div>
-
-        <div class="content-block">
-          <div class="admin-toolbar">
-            <h2>Текущие позиции</h2>
-            <input class="catalog-search-input admin-search" type="search" placeholder="Поиск по названию или категории" data-admin-search>
-          </div>
-          <?php if (!$items): ?>
-            <p>Каталог пока пуст.</p>
-          <?php else: ?>
-            <div class="admin-list">
-              <?php foreach ($items as $item): ?>
-                <article
-                  class="info-item admin-list-item"
-                  data-admin-item
-                  data-name="<?= app_h($item['name'] ?? '') ?>"
-                  data-category="<?= app_h($item['category'] ?? '') ?>"
-                >
-                  <?php if (!empty($item['image'])): ?>
-                    <img class="admin-item-thumb" src="/<?= app_h(ltrim($item['image'], '/')) ?>" alt="<?= app_h($item['name'] ?? '') ?>">
-                  <?php endif; ?>
-                  <div class="admin-item-main">
-                    <h2><?= app_h($item['name'] ?? '') ?></h2>
-                    <p>ID: <?= app_h($item['id'] ?? '') ?> · <?= app_h($item['category'] ?? '') ?></p>
-                    <p>
-                      <?= app_h($item['price'] ?? '') !== '' ? 'Цена: ' . app_h($item['price'] ?? '') . ' Br' : 'Цена не указана' ?>
-                      ·
-                      <?= app_h($types[$item['type'] ?? ''] ?? 'тип не указан') ?>
-                    </p>
-                  </div>
-                  <div class="admin-item-actions">
-                    <a class="btn btn-secondary" href="/admin/index.php?edit=<?= app_h($item['id'] ?? '') ?>">Редактировать</a>
-                    <form method="post" onsubmit="return confirm('Удалить эту позицию?');">
-                      <input type="hidden" name="action" value="delete">
-                      <input type="hidden" name="id" value="<?= app_h($item['id'] ?? '') ?>">
-                      <button class="btn btn-secondary" type="submit">Удалить</button>
-                    </form>
-                  </div>
-                </article>
-              <?php endforeach; ?>
+              </form>
             </div>
-          <?php endif; ?>
+          </div>
         </div>
 
         <div class="content-block">

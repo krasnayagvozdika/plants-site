@@ -10,7 +10,7 @@ function catalog_repository_ensure_file(string $path): void
 
     if (!file_exists($path)) {
         $seed = [
-            'updated_at' => gmdate('c'),
+            'updated_at' => app_now_msk_iso(),
             'items' => [],
         ];
 
@@ -31,7 +31,7 @@ function catalog_repository_read(array $config): array
 
     if (!is_array($data)) {
         return [
-            'updated_at' => gmdate('c'),
+            'updated_at' => app_now_msk_iso(),
             'items' => [],
         ];
     }
@@ -46,7 +46,7 @@ function catalog_repository_write(array $config, array $data): void
     $path = $config['catalog']['file'];
     catalog_repository_ensure_file($path);
 
-    $data['updated_at'] = gmdate('c');
+    $data['updated_at'] = app_now_msk_iso();
     $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
     file_put_contents($path, $json . PHP_EOL, LOCK_EX);

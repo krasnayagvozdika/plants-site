@@ -883,6 +883,13 @@ button {
   flex-wrap: wrap;
 }
 
+.admin-toolbar-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
 .admin-search {
   width: 100%;
   max-width: 360px;
@@ -971,6 +978,7 @@ button {
   max-height: 720px;
   overflow-y: auto;
   padding-right: 6px;
+  align-content: start;
 }
 
 .admin-list-item {
@@ -1012,6 +1020,21 @@ button {
   border-radius: 12px;
   border: 1px solid #e7ece6;
   margin-bottom: 0;
+}
+
+.admin-modal-content {
+  max-width: 980px;
+}
+
+.admin-modal-block {
+  margin-top: 0;
+  border-top: none;
+  padding-top: 0;
+}
+
+.admin-list-item.is-hidden,
+.admin-list-item[hidden] {
+  display: none !important;
 }
 
 .info-grid {
@@ -1488,6 +1511,10 @@ button {
 
   .admin-search {
     max-width: none;
+  }
+
+  .admin-toolbar-actions {
+    width: 100%;
   }
 
   .admin-list-item {

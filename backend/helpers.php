@@ -33,3 +33,23 @@ function app_slugify(string $value): string
 
     return $value !== '' ? $value : 'plant';
 }
+
+function app_now_msk_iso(): string
+{
+    return (new DateTimeImmutable('now', new DateTimeZone('Europe/Moscow')))->format(DateTimeInterface::ATOM);
+}
+
+function app_format_admin_datetime(?string $value): string
+{
+    if (!$value) {
+        return '';
+    }
+
+    try {
+        $date = new DateTimeImmutable($value);
+        $date = $date->setTimezone(new DateTimeZone('Europe/Moscow'));
+        return $date->format('d.m.Y H:i') . ' (МСК)';
+    } catch (Throwable) {
+        return $value;
+    }
+}
