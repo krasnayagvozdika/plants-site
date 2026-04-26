@@ -10,16 +10,14 @@ $message = '';
 $error = '';
 $editingId = isset($_GET['edit']) ? trim((string) $_GET['edit']) : '';
 $editingItem = $editingId !== '' ? catalog_repository_find_item($catalog, $editingId) : null;
-$categories = [
-    'Туи',
-    'Хвойные',
-    'Сосны',
-    'Кустарники',
-    'Многолетники',
-    'Комнатные',
-    'Однолетние',
-    'Пряные травы',
-];
+$categories = [];
+foreach ($items as $item) {
+    $category = trim((string) ($item['category'] ?? ''));
+    if ($category !== '' && !in_array($category, $categories, true)) {
+        $categories[] = $category;
+    }
+}
+sort($categories, SORT_NATURAL | SORT_FLAG_CASE);
 $types = [
     'pot' => 'в горшке',
     'ground' => 'в грунте',
@@ -231,20 +229,23 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
             <div class="admin-list">
               <?php foreach ($items as $item): ?>
                 <article
-                  class="info-item"
+                  class="info-item admin-list-item"
                   data-admin-item
                   data-name="<?= app_h($item['name'] ?? '') ?>"
                   data-category="<?= app_h($item['category'] ?? '') ?>"
                 >
-                  <h2><?= app_h($item['name'] ?? '') ?></h2>
                   <?php if (!empty($item['image'])): ?>
                     <img class="admin-item-thumb" src="/<?= app_h(ltrim($item['image'], '/')) ?>" alt="<?= app_h($item['name'] ?? '') ?>">
                   <?php endif; ?>
-                  <p>ID: <?= app_h($item['id'] ?? '') ?></p>
-                  <p>Категория: <?= app_h($item['category'] ?? '') ?></p>
-                  <p>Цена: <?= app_h($item['price'] ?? '') ?></p>
-                  <p>Формат: <?= app_h($item['type'] ?? '') ?></p>
-                  <p>Изображение: <?= app_h($item['image'] ?? '') ?></p>
+                  <div class="admin-item-main">
+                    <h2><?= app_h($item['name'] ?? '') ?></h2>
+                    <p>ID: <?= app_h($item['id'] ?? '') ?> · <?= app_h($item['category'] ?? '') ?></p>
+                    <p>
+                      <?= app_h($item['price'] ?? '') !== '' ? 'Цена: ' . app_h($item['price'] ?? '') . ' Br' : 'Цена не указана' ?>
+                      ·
+                      <?= app_h($types[$item['type'] ?? ''] ?? 'тип не указан') ?>
+                    </p>
+                  </div>
                   <div class="admin-item-actions">
                     <a class="btn btn-secondary" href="/admin/index.php?edit=<?= app_h($item['id'] ?? '') ?>">Редактировать</a>
                     <form method="post" onsubmit="return confirm('Удалить эту позицию?');">
