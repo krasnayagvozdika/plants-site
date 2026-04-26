@@ -11,20 +11,15 @@ $error = '';
 $editingId = isset($_GET['edit']) ? trim((string) $_GET['edit']) : '';
 $editingItem = $editingId !== '' ? catalog_repository_find_item($catalog, $editingId) : null;
 $isCreateMode = isset($_GET['create']);
-$isFormOpen = $editingItem !== null || $isCreateMode || $error !== '';
-$categories = [];
-foreach ($items as $item) {
-    $category = trim((string) ($item['category'] ?? ''));
-    if ($category !== '' && !in_array($category, $categories, true)) {
-        $categories[] = $category;
-    }
-}
-sort($categories, SORT_NATURAL | SORT_FLAG_CASE);
+$isFormOpen = $editingItem !== null || $isCreateMode;
+$categories = $catalog['categories'];
 $types = [
     'pot' => 'в горшке',
     'ground' => 'в грунте',
     'cut' => 'под срезку',
 ];
+$categoryEdit = isset($_GET['category_edit']) ? trim((string) $_GET['category_edit']) : '';
+$isCategoryModalOpen = $categoryEdit !== '' || isset($_GET['category_create']);
 
 if (app_is_post() && (string) ($_POST['action'] ?? '') === 'delete') {
     try {
@@ -43,6 +38,30 @@ if (app_is_post() && (string) ($_POST['action'] ?? '') === 'delete') {
         $editingItem = null;
     } catch (Throwable $exception) {
         $error = $exception->getMessage();
+    }
+}
+
+if (app_is_post() && (string) ($_POST['action'] ?? '') === 'category_save') {
+    try {
+        $oldCategory = trim((string) ($_POST['old_category'] ?? ''));
+        $newCategory = trim((string) ($_POST['new_category'] ?? ''));
+
+        if ($oldCategory !== '') {
+            catalog_repository_rename_category($config, $oldCategory, $newCategory);
+            $message = 'Категория обновлена во всем каталоге.';
+        } else {
+            catalog_repository_add_category($config, $newCategory);
+            $message = 'Категория добавлена.';
+        }
+
+        $catalog = catalog_repository_read($config);
+        $items = $catalog['items'];
+        $categories = $catalog['categories'];
+        $categoryEdit = '';
+        $isCategoryModalOpen = false;
+    } catch (Throwable $exception) {
+        $error = $exception->getMessage();
+        $isCategoryModalOpen = true;
     }
 }
 
@@ -90,10 +109,13 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
 
         $catalog = catalog_repository_read($config);
         $items = $catalog['items'];
+        $categories = $catalog['categories'];
         $editingId = '';
         $editingItem = null;
+        $isFormOpen = false;
     } catch (Throwable $exception) {
         $error = $exception->getMessage();
+        $isFormOpen = true;
     }
 }
 ?>
@@ -141,10 +163,13 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
 
         <div class="content-block">
           <div class="admin-toolbar">
-            <h2>Текущие позиции</h2>
-            <div class="admin-toolbar-actions">
-              <input class="catalog-search-input admin-search" type="search" placeholder="Поиск по названию или категории" data-admin-search>
+            <div class="admin-toolbar-actions admin-toolbar-actions-left">
               <a class="btn btn-primary" href="/admin/index.php?create=1">Добавить позицию</a>
+              <a class="btn btn-secondary" href="/admin/index.php?category_create=1">Добавить категорию</a>
+            </div>
+            <h2>Текущие позиции</h2>
+            <div class="admin-toolbar-actions admin-toolbar-actions-right">
+              <input class="catalog-search-input admin-search" type="search" placeholder="Поиск по названию или категории" data-admin-search>
             </div>
           </div>
           <?php if (!$items): ?>
@@ -248,7 +273,8 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
             <div>
               <div class="admin-dropzone" data-dropzone>
                 <div class="admin-dropzone-title">Фото растения</div>
-                <div class="admin-dropzone-text">Перетащите фото сюда или нажмите, чтобы выбрать файл.</div>
+                <div class="admin-dropzone-text">Перетащите фото сюда или нажмите кнопку выбора файла.</div>
+                <p><button class="btn btn-secondary" type="button" data-select-image>Выбрать файл</button></p>
                 <input type="file" name="image" accept="image/jpeg,image/png,image/webp">
 
                 <div class="admin-preview">
@@ -265,6 +291,46 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
                 </div>
               </div>
             </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-block">
+          <div class="admin-toolbar">
+            <h2>Категории</h2>
+          </div>
+          <div class="admin-categories-list">
+            <?php foreach ($categories as $category): ?>
+              <article class="info-item admin-category-item">
+                <div class="admin-category-name"><?= app_h($category) ?></div>
+                <a class="btn btn-secondary" href="/admin/index.php?category_edit=<?= urlencode($category) ?>">Редактировать</a>
+              </article>
+            <?php endforeach; ?>
+          </div>
+        </div>
+
+        <div id="admin-category-modal" class="modal<?= $isCategoryModalOpen ? ' open' : '' ?>" aria-hidden="<?= $isCategoryModalOpen ? 'false' : 'true' ?>">
+          <div class="modal-content admin-modal-content admin-category-modal-content" tabindex="-1">
+            <a class="modal-close" href="/admin/index.php" aria-label="Закрыть">×</a>
+            <div class="content-block admin-modal-block">
+              <h2><?= $categoryEdit !== '' ? 'Редактировать категорию' : 'Добавить категорию' ?></h2>
+              <form method="post" class="admin-category-form">
+                <input type="hidden" name="action" value="category_save">
+                <input type="hidden" name="old_category" value="<?= app_h($categoryEdit) ?>">
+                <label>Название категории
+                  <input
+                    class="catalog-search-input"
+                    type="text"
+                    name="new_category"
+                    value="<?= app_h((string) ($_POST['new_category'] ?? ($categoryEdit !== '' ? $categoryEdit : ''))) ?>"
+                    required
+                  >
+                </label>
+                <div class="admin-actions">
+                  <button class="btn btn-primary" type="submit">Сохранить категорию</button>
+                  <a class="btn btn-secondary" href="/admin/index.php">Отмена</a>
+                </div>
               </form>
             </div>
           </div>

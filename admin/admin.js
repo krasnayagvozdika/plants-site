@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const dropzone = document.querySelector("[data-dropzone]");
+  const selectImageButton = document.querySelector("[data-select-image]");
   const fileInput = document.querySelector('input[type="file"][name="image"]');
   const previewImage = document.querySelector("[data-image-preview]");
   const previewText = document.querySelector("[data-image-preview-text]");
@@ -22,9 +23,13 @@ document.addEventListener("DOMContentLoaded", () => {
       reader.readAsDataURL(file);
     };
 
-    dropzone.addEventListener("click", () => {
-      fileInput.click();
-    });
+    if (selectImageButton) {
+      selectImageButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        fileInput.click();
+      });
+    }
 
     fileInput.addEventListener("change", () => {
       if (fileInput.files && fileInput.files[0]) {
