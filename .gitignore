@@ -1,4 +1,5 @@
 .codex
 .DS_Store
+backend/config.local.php
 images/catalog/*
 !images/catalog/.gitkeep
