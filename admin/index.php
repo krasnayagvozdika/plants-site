@@ -18,6 +18,7 @@ $types = [
     'ground' => 'в грунте',
     'cut' => 'под срезку',
 ];
+$isPasswordModalOpen = isset($_GET['password']) || (app_is_post() && (string) ($_POST['action'] ?? '') === 'password_save' && $error !== '');
 $categoryEdit = isset($_GET['category_edit']) ? trim((string) $_GET['category_edit']) : '';
 $isCategoryModalOpen = $categoryEdit !== '' || isset($_GET['category_create']);
 
@@ -62,6 +63,34 @@ if (app_is_post() && (string) ($_POST['action'] ?? '') === 'category_save') {
     } catch (Throwable $exception) {
         $error = $exception->getMessage();
         $isCategoryModalOpen = true;
+    }
+}
+
+if (app_is_post() && (string) ($_POST['action'] ?? '') === 'password_save') {
+    try {
+        $currentPassword = (string) ($_POST['current_password'] ?? '');
+        $newPassword = (string) ($_POST['new_password'] ?? '');
+        $confirmPassword = (string) ($_POST['confirm_password'] ?? '');
+
+        if ($currentPassword !== ($config['admin']['password'] ?? '')) {
+            throw new RuntimeException('Текущий пароль введен неверно.');
+        }
+
+        if (trim($newPassword) === '') {
+            throw new RuntimeException('Новый пароль не может быть пустым.');
+        }
+
+        if ($newPassword !== $confirmPassword) {
+            throw new RuntimeException('Новый пароль и подтверждение не совпадают.');
+        }
+
+        $config['admin']['password'] = $newPassword;
+        config_writer_save($config);
+        $message = 'Пароль администратора обновлен.';
+        $isPasswordModalOpen = false;
+    } catch (Throwable $exception) {
+        $error = $exception->getMessage();
+        $isPasswordModalOpen = true;
     }
 }
 
@@ -165,6 +194,7 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
             <div class="admin-toolbar-actions admin-toolbar-actions-left">
               <a class="btn btn-primary" href="/admin/index.php?create=1">Добавить позицию</a>
               <a class="btn btn-secondary" href="/admin/index.php?category_create=1">Категории</a>
+              <a class="btn btn-secondary admin-small-btn" href="/admin/index.php?password=1">Сменить пароль</a>
             </div>
             <h2>Текущие позиции</h2>
             <div class="admin-toolbar-actions admin-toolbar-actions-right">
@@ -327,6 +357,33 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
                   </article>
                 <?php endforeach; ?>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="admin-password-modal" class="modal<?= $isPasswordModalOpen ? ' open' : '' ?>" aria-hidden="<?= $isPasswordModalOpen ? 'false' : 'true' ?>">
+          <div class="modal-content admin-modal-content admin-category-modal-content" tabindex="-1">
+            <a class="modal-close" href="/admin/index.php" aria-label="Закрыть">×</a>
+            <div class="content-block admin-modal-block">
+              <div class="admin-modal-head">
+                <h2>Сменить пароль</h2>
+              </div>
+              <form method="post" class="admin-category-form">
+                <input type="hidden" name="action" value="password_save">
+                <label>Текущий пароль
+                  <input class="catalog-search-input" type="password" name="current_password" required>
+                </label>
+                <label>Новый пароль
+                  <input class="catalog-search-input" type="password" name="new_password" required>
+                </label>
+                <label>Повторите новый пароль
+                  <input class="catalog-search-input" type="password" name="confirm_password" required>
+                </label>
+                <div class="admin-actions">
+                  <button class="btn btn-primary" type="submit">Сохранить пароль</button>
+                  <a class="btn btn-secondary" href="/admin/index.php">Отмена</a>
+                </div>
+              </form>
             </div>
           </div>
         </div>
