@@ -9,7 +9,7 @@ if (file_exists($configFile)) {
 return [
     'admin' => [
         'username' => 'admin',
-        'password' => 'change-me-now',
+        'password' => 'admin111',
     ],
     'catalog' => [
         'file' => __DIR__ . '/../data/catalog.json',
