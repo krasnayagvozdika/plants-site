@@ -30,7 +30,7 @@ For the real hosting, the project is expected to work directly from the host fil
 
 - URL: `/admin/login.php`
 - Default login: `admin`
-- Default password: `change-me-now`
+- Default password: `admin111`
 
 If the password was changed through the admin UI, the new value is stored in `backend/config.local.php`.
 
