@@ -1,5 +1,7 @@
 .codex
 .DS_Store
 backend/config.local.php
+data/sessions/*
+!data/sessions/.gitkeep
 images/catalog/*
 !images/catalog/.gitkeep

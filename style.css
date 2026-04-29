@@ -166,6 +166,16 @@ button {
   background: #f9fafb;
 }
 
+.btn-danger {
+  background: #8a1f1f;
+  color: #ffffff;
+  box-shadow: 0 8px 18px rgba(138, 31, 31, 0.16);
+}
+
+.btn-danger:hover {
+  background: #711818;
+}
+
 .btn-large {
   min-height: 54px;
   padding: 14px 28px;
@@ -625,6 +635,19 @@ button {
   font-weight: 700;
 }
 
+.stock-status {
+  align-self: flex-start;
+  border-radius: 999px;
+  padding: 5px 9px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.stock-status-off {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
 .empty {
   text-align: center;
   color: #6b7280;
@@ -756,6 +779,16 @@ button {
 .modal-tag-soft {
   background: rgba(47, 125, 50, 0.10);
   color: #2f7d32;
+}
+
+.modal-tag-stock {
+  background: #eef7ed;
+  color: #1c5f26;
+}
+
+.modal-tag-muted {
+  background: #f3f4f6;
+  color: #4b5563;
 }
 
 .modal-title {
@@ -926,6 +959,56 @@ button {
   font-weight: 600;
 }
 
+.admin-switch-row {
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+  min-height: 42px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.admin-switch-row input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.admin-switch {
+  position: relative;
+  width: 46px;
+  height: 26px;
+  border-radius: 999px;
+  background: #d1d5db;
+  transition: background 0.2s ease;
+}
+
+.admin-switch::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 2px 5px rgba(31, 41, 55, 0.22);
+  transition: transform 0.2s ease;
+}
+
+.admin-switch-row input:checked + .admin-switch {
+  background: #2f7d32;
+}
+
+.admin-switch-row input:checked + .admin-switch::after {
+  transform: translateX(20px);
+}
+
+.admin-switch-row input:focus-visible + .admin-switch {
+  outline: 3px solid rgba(47, 125, 50, 0.22);
+  outline-offset: 3px;
+}
+
 .admin-form-fields input[type="file"] {
   display: none;
 }
@@ -938,6 +1021,25 @@ button {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+}
+
+.admin-footer-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #e7ece6;
+}
+
+.admin-export-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-left: auto;
 }
 
 .admin-dropzone {
@@ -1031,10 +1133,70 @@ button {
   flex-wrap: wrap;
 }
 
+.admin-item-actions form {
+  margin: 0;
+}
+
 .admin-item-actions .btn {
   min-height: 28px;
   padding: 5px 8px;
   font-size: 11px;
+}
+
+.admin-inline-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  border: 1px solid #d7e3d4;
+  border-radius: 999px;
+  padding: 4px 8px 4px 5px;
+  background: #ffffff;
+  color: #4b5563;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.admin-inline-switch.active {
+  border-color: rgba(47, 125, 50, 0.35);
+  color: #2f7d32;
+}
+
+.admin-inline-switch:hover {
+  border-color: #2f7d32;
+}
+
+.admin-inline-switch-track {
+  position: relative;
+  width: 30px;
+  height: 18px;
+  border-radius: 999px;
+  background: #d1d5db;
+  transition: background 0.2s ease;
+}
+
+.admin-inline-switch-track::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(31, 41, 55, 0.22);
+  transition: transform 0.2s ease;
+}
+
+.admin-inline-switch.active .admin-inline-switch-track {
+  background: #2f7d32;
+}
+
+.admin-inline-switch.active .admin-inline-switch-track::after {
+  transform: translateX(12px);
 }
 
 .admin-item-thumb {

@@ -147,6 +147,9 @@ export async function initCatalogPage() {
           <div class="modal-tags">
             <span class="modal-tag">${escapeHtml(plant.category)}</span>
             <span class="modal-tag modal-tag-soft">${escapeHtml(typeLabel)}</span>
+            <span class="modal-tag ${plant.available === false ? "modal-tag-muted" : "modal-tag-stock"}">
+              ${plant.available === false ? "Нет в наличии" : "В наличии"}
+            </span>
           </div>
 
           <h2 class="modal-title" id="modal-title">${escapeHtml(plant.name)}</h2>
@@ -171,16 +174,14 @@ export async function initCatalogPage() {
             }
           </div>
 
-          <div class="modal-description-block">
-            <h3>Описание</h3>
-            <div class="modal-description">
-              ${
-                plant.description
-                  ? escapeHtml(plant.description)
-                  : "Описание скоро появится. Пока можно ориентироваться по фотографии и уточнять наличие и детали по телефону."
-              }
-            </div>
-          </div>
+          ${
+            plant.description
+              ? `<div class="modal-description-block">
+                  <h3>Описание</h3>
+                  <div class="modal-description">${escapeHtml(plant.description)}</div>
+                </div>`
+              : ""
+          }
         </div>
       </article>
     `;
@@ -243,6 +244,7 @@ export async function initCatalogPage() {
             <div class="card-content">
               <h3>${escapeHtml(plant.name)}</h3>
               <div class="meta">${escapeHtml(plant.category)} · ${escapeHtml(typeLabel)}</div>
+              ${plant.available === false ? '<div class="stock-status stock-status-off">Нет в наличии</div>' : ""}
               ${plant.price ? `<div class="price">Цена от ${escapeHtml(plant.price)} Br</div>` : ""}
             </div>
           </article>

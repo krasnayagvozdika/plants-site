@@ -42,6 +42,30 @@ if (app_is_post() && (string) ($_POST['action'] ?? '') === 'delete') {
     }
 }
 
+if (app_is_post() && (string) ($_POST['action'] ?? '') === 'availability_toggle') {
+    try {
+        $toggleId = trim((string) ($_POST['id'] ?? ''));
+        $toggleItem = catalog_repository_find_item($catalog, $toggleId);
+
+        if (!$toggleItem) {
+            throw new RuntimeException('Позиция для обновления не найдена.');
+        }
+
+        catalog_repository_update_item($config, $toggleId, [
+            'available' => !catalog_repository_normalize_available($toggleItem['available'] ?? true),
+        ]);
+
+        $catalog = catalog_repository_read($config);
+        $items = $catalog['items'];
+        $categories = $catalog['categories'];
+        $message = 'Наличие обновлено.';
+        $editingId = '';
+        $editingItem = null;
+    } catch (Throwable $exception) {
+        $error = $exception->getMessage();
+    }
+}
+
 if (app_is_post() && (string) ($_POST['action'] ?? '') === 'category_save') {
     try {
         $oldCategory = trim((string) ($_POST['old_category'] ?? ''));
@@ -103,7 +127,7 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
         $type = trim((string) ($_POST['type'] ?? ''));
         $size = trim((string) ($_POST['size'] ?? ''));
         $description = trim((string) ($_POST['description'] ?? ''));
-        $available = trim((string) ($_POST['available'] ?? ''));
+        $available = isset($_POST['available']);
         $currentImage = trim((string) ($_POST['current_image'] ?? ''));
 
         if ($name === '' || $category === '') {
@@ -133,7 +157,7 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
         } else {
             $item['id'] = catalog_repository_next_id($catalog);
             catalog_repository_add_item($config, $item);
-            $message = 'Позиция добавлена в локальный каталог.';
+            $message = 'Позиция добавлена.';
         }
 
         $catalog = catalog_repository_read($config);
@@ -206,6 +230,7 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
           <?php else: ?>
             <div class="admin-list">
               <?php foreach ($items as $item): ?>
+                <?php $itemAvailable = catalog_repository_normalize_available($item['available'] ?? true); ?>
                 <article
                   class="info-item admin-list-item"
                   data-admin-item
@@ -225,6 +250,14 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
                     </p>
                   </div>
                   <div class="admin-item-actions">
+                    <form method="post">
+                      <input type="hidden" name="action" value="availability_toggle">
+                      <input type="hidden" name="id" value="<?= app_h($item['id'] ?? '') ?>">
+                      <button class="admin-inline-switch<?= $itemAvailable ? ' active' : '' ?>" type="submit" aria-label="<?= $itemAvailable ? 'Снять с наличия' : 'Отметить в наличии' ?>">
+                        <span class="admin-inline-switch-track" aria-hidden="true"></span>
+                        <span class="admin-inline-switch-text"><?= $itemAvailable ? 'В наличии' : 'Нет в наличии' ?></span>
+                      </button>
+                    </form>
                     <a class="btn btn-secondary" href="/admin/index.php?edit=<?= app_h($item['id'] ?? '') ?>">Редактировать</a>
                     <form method="post" onsubmit="return confirm('Удалить эту позицию?');">
                       <input type="hidden" name="action" value="delete">
@@ -283,8 +316,11 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
                 <input class="catalog-search-input" type="text" name="size" value="<?= app_h($editingItem['size'] ?? '') ?>">
               </label>
 
-              <label>Наличие
-                <input class="catalog-search-input" type="text" name="available" value="<?= app_h($editingItem['available'] ?? '') ?>" placeholder="Например, в наличии">
+              <?php $isAvailable = catalog_repository_normalize_available($editingItem['available'] ?? true); ?>
+              <label class="admin-switch-row">
+                <input type="checkbox" name="available" value="1" <?= $isAvailable ? 'checked' : '' ?>>
+                <span class="admin-switch" aria-hidden="true"></span>
+                <span>В наличии</span>
               </label>
 
               <label>Описание
@@ -388,8 +424,12 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
           </div>
         </div>
 
-        <div class="content-block">
-          <p><a class="btn btn-secondary" href="/admin/logout.php">Выйти</a></p>
+        <div class="admin-footer-actions">
+          <a class="btn btn-danger admin-small-btn" href="/admin/logout.php">Выйти</a>
+          <div class="admin-export-actions">
+            <a class="btn btn-secondary admin-small-btn" href="/admin/export-xls.php">Скачать Excel</a>
+            <a class="btn btn-secondary admin-small-btn" href="/admin/catalog-print.php" target="_blank" rel="noopener">PDF каталог</a>
+          </div>
         </div>
       </section>
     </div>

@@ -38,7 +38,7 @@ function catalog_repository_read(array $config): array
         ];
     }
 
-    $data['items'] = is_array($data['items'] ?? null) ? $data['items'] : [];
+    $data['items'] = catalog_repository_normalize_items(is_array($data['items'] ?? null) ? $data['items'] : []);
     $data['categories'] = catalog_repository_normalize_categories($data);
 
     return $data;
@@ -50,6 +50,7 @@ function catalog_repository_write(array $config, array $data): void
     catalog_repository_ensure_file($path);
 
     $data['updated_at'] = app_now_msk_iso();
+    $data['items'] = catalog_repository_normalize_items($data['items'] ?? []);
     $data['categories'] = catalog_repository_normalize_categories($data);
     $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
@@ -58,16 +59,21 @@ function catalog_repository_write(array $config, array $data): void
 
 function catalog_repository_next_id(array $catalog): string
 {
-    $max = 0;
+    $used = [];
 
     foreach ($catalog['items'] as $item) {
         $id = (int) ($item['id'] ?? 0);
-        if ($id > $max) {
-            $max = $id;
+        if ($id > 0) {
+            $used[$id] = true;
         }
     }
 
-    return str_pad((string) ($max + 1), 4, '0', STR_PAD_LEFT);
+    $next = 1;
+    while (isset($used[$next])) {
+        $next++;
+    }
+
+    return str_pad((string) $next, 4, '0', STR_PAD_LEFT);
 }
 
 function catalog_repository_add_item(array $config, array $item): void
@@ -121,6 +127,46 @@ function catalog_repository_delete_item(array $config, string $id): ?array
     }
 
     return null;
+}
+
+function catalog_repository_normalize_items(array $items): array
+{
+    $normalized = [];
+
+    foreach ($items as $item) {
+        if (!is_array($item)) {
+            continue;
+        }
+
+        $item['id'] = str_pad((string) ((int) ($item['id'] ?? 0)), 4, '0', STR_PAD_LEFT);
+        $item['available'] = catalog_repository_normalize_available($item['available'] ?? true);
+        $normalized[] = $item;
+    }
+
+    usort($normalized, function (array $left, array $right): int {
+        return (int) ($left['id'] ?? 0) <=> (int) ($right['id'] ?? 0);
+    });
+
+    return $normalized;
+}
+
+function catalog_repository_normalize_available($value): bool
+{
+    if (is_bool($value)) {
+        return $value;
+    }
+
+    $value = trim(mb_strtolower((string) $value, 'UTF-8'));
+
+    if ($value === '' || $value === '1' || $value === 'true' || $value === 'yes' || $value === 'on') {
+        return true;
+    }
+
+    if ($value === '0' || $value === 'false' || $value === 'no' || $value === 'off' || $value === 'нет' || $value === 'не в наличии') {
+        return false;
+    }
+
+    return true;
 }
 
 function catalog_repository_normalize_categories(array $catalog): array

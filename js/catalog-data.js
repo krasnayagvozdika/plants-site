@@ -18,7 +18,28 @@ export async function loadCatalogPlants() {
     throw new Error("Catalog JSON has invalid shape.");
   }
 
-  return items.filter((plant) => plant && plant.name && plant.category);
+  return items
+    .filter((plant) => plant && plant.name && plant.category)
+    .map((plant) => ({
+      ...plant,
+      available: normalizeAvailability(plant.available),
+    }));
+}
+
+function normalizeAvailability(value) {
+  if (typeof value === "boolean") return value;
+
+  const normalized = String(value ?? "").trim().toLowerCase();
+
+  if (!normalized || ["1", "true", "yes", "on"].includes(normalized)) {
+    return true;
+  }
+
+  if (["0", "false", "no", "off", "нет", "не в наличии"].includes(normalized)) {
+    return false;
+  }
+
+  return true;
 }
 
 export function getUniquePlantsByImage(items) {

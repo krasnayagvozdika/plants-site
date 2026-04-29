@@ -34,7 +34,6 @@ if (app_is_post()) {
         <div class="page-intro">
           <span class="page-kicker">Администрирование</span>
           <h1 class="page-title">Вход</h1>
-          <p class="page-lead">Тестовый каркас админ-панели для управления каталогом и изображениями.</p>
         </div>
 
         <?php if ($error !== ''): ?>
