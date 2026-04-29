@@ -29,19 +29,17 @@ function image_service_store_uploaded_file(array $config, array $file, string $p
         throw new RuntimeException('Поддерживаются только JPG, PNG и WEBP.');
     }
 
+    if (!extension_loaded('gd')) {
+        throw new RuntimeException('На хостинге не включено расширение PHP GD. Загрузка изображений невозможна.');
+    }
+
     $extension = image_service_preferred_extension($imageInfo['mime']);
     $baseName = app_slugify($plantName) . '-' . date('YmdHis') . '-' . image_service_random_suffix();
     $finalName = $baseName . '.' . $extension;
     $finalPath = rtrim($config['images']['dir'], '/') . '/' . $finalName;
 
-    if (extension_loaded('gd')) {
-        $finalPath = image_service_store_with_gd($config, $tmpPath, $imageInfo['mime'], $finalPath, $extension);
-        $finalName = basename($finalPath);
-    } else {
-        if (!move_uploaded_file($tmpPath, $finalPath)) {
-            throw new RuntimeException('Не удалось сохранить изображение на сервере.');
-        }
-    }
+    $finalPath = image_service_store_with_gd($config, $tmpPath, $imageInfo['mime'], $finalPath, $extension);
+    $finalName = basename($finalPath);
 
     return rtrim($config['images']['web_path'], '/') . '/' . $finalName;
 }
@@ -89,10 +87,7 @@ function image_service_store_with_gd(array $config, string $tmpPath, string $mim
     }
 
     if (!$source) {
-        if (!move_uploaded_file($tmpPath, $finalPath)) {
-            throw new RuntimeException('Не удалось подготовить изображение.');
-        }
-        return $finalPath;
+        throw new RuntimeException('Не удалось подготовить изображение через GD.');
     }
 
     $width = imagesx($source);
