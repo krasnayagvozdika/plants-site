@@ -1,8 +1,35 @@
 <?php
 
-function app_redirect(string $path): never
+function app_base_path(): string
 {
-    header("Location: {$path}");
+    $scriptName = (string) ($_SERVER['SCRIPT_NAME'] ?? '');
+
+    foreach (['/admin/', '/api/'] as $marker) {
+        $position = strpos($scriptName, $marker);
+
+        if ($position !== false) {
+            return rtrim(substr($scriptName, 0, $position), '/');
+        }
+    }
+
+    return '';
+}
+
+function app_url(string $path): string
+{
+    if (preg_match('/^https?:\/\//', $path)) {
+        return $path;
+    }
+
+    $basePath = app_base_path();
+    $path = '/' . ltrim($path, '/');
+
+    return $basePath . $path;
+}
+
+function app_redirect(string $path): void
+{
+    header('Location: ' . app_url($path));
     exit;
 }
 
@@ -18,7 +45,7 @@ function app_h(?string $value): string
 
 function app_slugify(string $value): string
 {
-    $value = mb_strtolower(trim($value), 'UTF-8');
+    $value = app_lower(trim($value));
     $map = [
         'а' => 'a', 'б' => 'b', 'в' => 'v', 'г' => 'g', 'д' => 'd', 'е' => 'e', 'ё' => 'e',
         'ж' => 'zh', 'з' => 'z', 'и' => 'i', 'й' => 'y', 'к' => 'k', 'л' => 'l', 'м' => 'm',
@@ -32,6 +59,15 @@ function app_slugify(string $value): string
     $value = trim($value, '-');
 
     return $value !== '' ? $value : 'plant';
+}
+
+function app_lower(string $value): string
+{
+    if (function_exists('mb_strtolower')) {
+        return mb_strtolower($value, 'UTF-8');
+    }
+
+    return strtolower($value);
 }
 
 function app_now_msk_iso(): string

@@ -3,5 +3,6 @@
 backend/config.local.php
 data/sessions/*
 !data/sessions/.gitkeep
+!data/sessions/.htaccess
 images/catalog/*
 !images/catalog/.gitkeep

@@ -30,12 +30,13 @@ function image_service_store_uploaded_file(array $config, array $file, string $p
     }
 
     $extension = image_service_preferred_extension($imageInfo['mime']);
-    $baseName = app_slugify($plantName) . '-' . date('YmdHis');
+    $baseName = app_slugify($plantName) . '-' . date('YmdHis') . '-' . image_service_random_suffix();
     $finalName = $baseName . '.' . $extension;
     $finalPath = rtrim($config['images']['dir'], '/') . '/' . $finalName;
 
     if (extension_loaded('gd')) {
-        image_service_store_with_gd($config, $tmpPath, $imageInfo['mime'], $finalPath, $extension);
+        $finalPath = image_service_store_with_gd($config, $tmpPath, $imageInfo['mime'], $finalPath, $extension);
+        $finalName = basename($finalPath);
     } else {
         if (!move_uploaded_file($tmpPath, $finalPath)) {
             throw new RuntimeException('Не удалось сохранить изображение на сервере.');
@@ -49,7 +50,7 @@ function image_service_delete_if_local(array $config, string $imagePath): void
 {
     $webPrefix = rtrim($config['images']['web_path'], '/') . '/';
 
-    if ($imagePath === '' || !str_starts_with($imagePath, $webPrefix)) {
+    if ($imagePath === '' || substr($imagePath, 0, strlen($webPrefix)) !== $webPrefix) {
         return;
     }
 
@@ -63,26 +64,35 @@ function image_service_delete_if_local(array $config, string $imagePath): void
 
 function image_service_preferred_extension(string $mime): string
 {
-    return match ($mime) {
-        'image/png' => 'png',
-        'image/webp' => 'webp',
-        default => 'jpg',
-    };
+    switch ($mime) {
+        case 'image/png':
+            return 'png';
+        case 'image/webp':
+            return 'webp';
+        default:
+            return 'jpg';
+    }
 }
 
-function image_service_store_with_gd(array $config, string $tmpPath, string $mime, string $finalPath, string $extension): void
+function image_service_store_with_gd(array $config, string $tmpPath, string $mime, string $finalPath, string $extension): string
 {
-    $source = match ($mime) {
-        'image/png' => @imagecreatefrompng($tmpPath),
-        'image/webp' => function_exists('imagecreatefromwebp') ? @imagecreatefromwebp($tmpPath) : false,
-        default => @imagecreatefromjpeg($tmpPath),
-    };
+    switch ($mime) {
+        case 'image/png':
+            $source = @imagecreatefrompng($tmpPath);
+            break;
+        case 'image/webp':
+            $source = function_exists('imagecreatefromwebp') ? @imagecreatefromwebp($tmpPath) : false;
+            break;
+        default:
+            $source = @imagecreatefromjpeg($tmpPath);
+            break;
+    }
 
     if (!$source) {
         if (!move_uploaded_file($tmpPath, $finalPath)) {
             throw new RuntimeException('Не удалось подготовить изображение.');
         }
-        return;
+        return $finalPath;
     }
 
     $width = imagesx($source);
@@ -108,18 +118,41 @@ function image_service_store_with_gd(array $config, string $tmpPath, string $mim
 
     imagecopyresampled($target, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 
-    $saved = match ($extension) {
-        'png' => imagepng($target, $finalPath, 6),
-        'webp' => function_exists('imagewebp')
-            ? imagewebp($target, $finalPath, (int) ($config['images']['webp_quality'] ?? 80))
-            : imagejpeg($target, preg_replace('/\.webp$/', '.jpg', $finalPath) ?: $finalPath, (int) ($config['images']['jpeg_quality'] ?? 82)),
-        default => imagejpeg($target, $finalPath, (int) ($config['images']['jpeg_quality'] ?? 82)),
-    };
+    $actualFinalPath = $finalPath;
+
+    if ($extension === 'webp' && !function_exists('imagewebp')) {
+        $actualFinalPath = preg_replace('/\.webp$/', '.jpg', $finalPath) ?: $finalPath;
+    }
+
+    switch ($extension) {
+        case 'png':
+            $saved = imagepng($target, $finalPath, 6);
+            break;
+        case 'webp':
+            $saved = function_exists('imagewebp')
+                ? imagewebp($target, $actualFinalPath, (int) ($config['images']['webp_quality'] ?? 80))
+                : imagejpeg($target, $actualFinalPath, (int) ($config['images']['jpeg_quality'] ?? 82));
+            break;
+        default:
+            $saved = imagejpeg($target, $finalPath, (int) ($config['images']['jpeg_quality'] ?? 82));
+            break;
+    }
 
     imagedestroy($source);
     imagedestroy($target);
 
     if (!$saved) {
         throw new RuntimeException('Не удалось сохранить обработанное изображение.');
+    }
+
+    return $actualFinalPath;
+}
+
+function image_service_random_suffix(): string
+{
+    try {
+        return bin2hex(random_bytes(3));
+    } catch (Throwable $exception) {
+        return substr(md5(uniqid('', true)), 0, 6);
     }
 }

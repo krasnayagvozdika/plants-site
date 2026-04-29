@@ -17,10 +17,10 @@ function admin_print_image_src(array $item): string
     $image = trim((string) ($item['image'] ?? ''));
 
     if ($image === '') {
-        return '/images/logo.png';
+        return app_url('/images/logo.png');
     }
 
-    return '/' . ltrim($image, '/');
+    return app_url('/' . ltrim($image, '/'));
 }
 ?>
 <!DOCTYPE html>
@@ -193,7 +193,7 @@ function admin_print_image_src(array $item): string
     <h1>Каталог растений</h1>
     <div class="print-actions">
       <button class="btn" type="button" onclick="window.print()">Сохранить PDF</button>
-      <a class="btn btn-secondary" href="/admin/index.php">Назад</a>
+      <a class="btn btn-secondary" href="<?= app_h(app_url('/admin/index.php')) ?>">Назад</a>
     </div>
   </header>
 

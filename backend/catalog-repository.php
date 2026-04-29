@@ -156,7 +156,7 @@ function catalog_repository_normalize_available($value): bool
         return $value;
     }
 
-    $value = trim(mb_strtolower((string) $value, 'UTF-8'));
+    $value = trim(app_lower((string) $value));
 
     if ($value === '' || $value === '1' || $value === 'true' || $value === 'yes' || $value === 'on') {
         return true;

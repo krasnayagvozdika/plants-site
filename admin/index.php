@@ -178,8 +178,8 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Админка каталога</title>
-  <link rel="stylesheet" href="/style.css">
-  <script defer src="/admin/admin.js"></script>
+  <link rel="stylesheet" href="<?= app_h(app_url('/style.css')) ?>">
+  <script defer src="<?= app_h(app_url('/admin/admin.js')) ?>"></script>
 </head>
 <body>
   <main class="page">
@@ -216,9 +216,9 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
         <div class="content-block">
           <div class="admin-toolbar">
             <div class="admin-toolbar-actions admin-toolbar-actions-left">
-              <a class="btn btn-primary" href="/admin/index.php?create=1">Добавить позицию</a>
-              <a class="btn btn-secondary" href="/admin/index.php?category_create=1">Категории</a>
-              <a class="btn btn-secondary admin-small-btn" href="/admin/index.php?password=1">Сменить пароль</a>
+              <a class="btn btn-primary" href="<?= app_h(app_url('/admin/index.php?create=1')) ?>">Добавить позицию</a>
+              <a class="btn btn-secondary" href="<?= app_h(app_url('/admin/index.php?category_create=1')) ?>">Категории</a>
+              <a class="btn btn-secondary admin-small-btn" href="<?= app_h(app_url('/admin/index.php?password=1')) ?>">Сменить пароль</a>
             </div>
             <h2>Текущие позиции</h2>
             <div class="admin-toolbar-actions admin-toolbar-actions-right">
@@ -238,7 +238,7 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
                   data-category="<?= app_h($item['category'] ?? '') ?>"
                 >
                   <?php if (!empty($item['image'])): ?>
-                    <img class="admin-item-thumb" src="/<?= app_h(ltrim($item['image'], '/')) ?>" alt="<?= app_h($item['name'] ?? '') ?>">
+                    <img class="admin-item-thumb" src="<?= app_h(app_url('/' . ltrim((string) ($item['image'] ?? ''), '/'))) ?>" alt="<?= app_h($item['name'] ?? '') ?>">
                   <?php endif; ?>
                   <div class="admin-item-main">
                     <h2><?= app_h($item['name'] ?? '') ?></h2>
@@ -258,7 +258,7 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
                         <span class="admin-inline-switch-text"><?= $itemAvailable ? 'В наличии' : 'Нет в наличии' ?></span>
                       </button>
                     </form>
-                    <a class="btn btn-secondary" href="/admin/index.php?edit=<?= app_h($item['id'] ?? '') ?>">Редактировать</a>
+                    <a class="btn btn-secondary" href="<?= app_h(app_url('/admin/index.php?edit=' . urlencode((string) ($item['id'] ?? '')))) ?>">Редактировать</a>
                     <form method="post" onsubmit="return confirm('Удалить эту позицию?');">
                       <input type="hidden" name="action" value="delete">
                       <input type="hidden" name="id" value="<?= app_h($item['id'] ?? '') ?>">
@@ -273,7 +273,7 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
 
         <div id="admin-form-modal" class="modal<?= $isFormOpen ? ' open' : '' ?>" aria-hidden="<?= $isFormOpen ? 'false' : 'true' ?>">
           <div class="modal-content admin-modal-content" tabindex="-1">
-            <a class="modal-close" href="/admin/index.php" aria-label="Закрыть">×</a>
+            <a class="modal-close" href="<?= app_h(app_url('/admin/index.php')) ?>" aria-label="Закрыть">×</a>
             <div class="content-block admin-modal-block">
               <h2><?= $editingItem ? 'Редактировать позицию' : 'Добавить позицию' ?></h2>
               <form method="post" enctype="multipart/form-data" class="admin-form-grid">
@@ -330,7 +330,7 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
               <div class="admin-actions">
                 <button class="btn btn-primary" type="submit"><?= $editingItem ? 'Сохранить изменения' : 'Сохранить позицию' ?></button>
                 <?php if ($editingItem): ?>
-                  <a class="btn btn-secondary" href="/admin/index.php">Отмена</a>
+                  <a class="btn btn-secondary" href="<?= app_h(app_url('/admin/index.php')) ?>">Отмена</a>
                 <?php endif; ?>
               </div>
             </div>
@@ -346,7 +346,7 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
                   <?php $previewImage = $editingItem['image'] ?? ''; ?>
                   <img
                     data-image-preview
-                    src="<?= $previewImage !== '' ? app_h('/' . ltrim($previewImage, '/')) : '' ?>"
+                    src="<?= $previewImage !== '' ? app_h(app_url('/' . ltrim($previewImage, '/'))) : '' ?>"
                     alt="Предпросмотр"
                     <?= $previewImage !== '' ? '' : 'hidden' ?>
                   >
@@ -363,7 +363,7 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
 
         <div id="admin-category-modal" class="modal<?= $isCategoryModalOpen ? ' open' : '' ?>" aria-hidden="<?= $isCategoryModalOpen ? 'false' : 'true' ?>">
           <div class="modal-content admin-modal-content admin-category-modal-content" tabindex="-1">
-            <a class="modal-close" href="/admin/index.php" aria-label="Закрыть">×</a>
+            <a class="modal-close" href="<?= app_h(app_url('/admin/index.php')) ?>" aria-label="Закрыть">×</a>
             <div class="content-block admin-modal-block">
               <div class="admin-modal-head">
                 <h2>Категории</h2>
@@ -382,14 +382,14 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
                 </label>
                 <div class="admin-actions">
                   <button class="btn btn-primary" type="submit"><?= $categoryEdit !== '' ? 'Сохранить категорию' : 'Добавить категорию' ?></button>
-                  <a class="btn btn-secondary" href="/admin/index.php">Отмена</a>
+                  <a class="btn btn-secondary" href="<?= app_h(app_url('/admin/index.php')) ?>">Отмена</a>
                 </div>
               </form>
               <div class="admin-categories-list">
                 <?php foreach ($categories as $category): ?>
                   <article class="info-item admin-category-item">
                     <div class="admin-category-name"><?= app_h($category) ?></div>
-                    <a class="btn btn-secondary" href="/admin/index.php?category_edit=<?= urlencode($category) ?>">Редактировать</a>
+                    <a class="btn btn-secondary" href="<?= app_h(app_url('/admin/index.php?category_edit=' . urlencode($category))) ?>">Редактировать</a>
                   </article>
                 <?php endforeach; ?>
               </div>
@@ -399,7 +399,7 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
 
         <div id="admin-password-modal" class="modal<?= $isPasswordModalOpen ? ' open' : '' ?>" aria-hidden="<?= $isPasswordModalOpen ? 'false' : 'true' ?>">
           <div class="modal-content admin-modal-content admin-category-modal-content" tabindex="-1">
-            <a class="modal-close" href="/admin/index.php" aria-label="Закрыть">×</a>
+            <a class="modal-close" href="<?= app_h(app_url('/admin/index.php')) ?>" aria-label="Закрыть">×</a>
             <div class="content-block admin-modal-block">
               <div class="admin-modal-head">
                 <h2>Сменить пароль</h2>
@@ -417,7 +417,7 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
                 </label>
                 <div class="admin-actions">
                   <button class="btn btn-primary" type="submit">Сохранить пароль</button>
-                  <a class="btn btn-secondary" href="/admin/index.php">Отмена</a>
+                  <a class="btn btn-secondary" href="<?= app_h(app_url('/admin/index.php')) ?>">Отмена</a>
                 </div>
               </form>
             </div>
@@ -425,10 +425,10 @@ if (app_is_post() && (string) ($_POST['action'] ?? 'save') === 'save') {
         </div>
 
         <div class="admin-footer-actions">
-          <a class="btn btn-danger admin-small-btn" href="/admin/logout.php">Выйти</a>
+          <a class="btn btn-danger admin-small-btn" href="<?= app_h(app_url('/admin/logout.php')) ?>">Выйти</a>
           <div class="admin-export-actions">
-            <a class="btn btn-secondary admin-small-btn" href="/admin/export-xls.php">Скачать Excel</a>
-            <a class="btn btn-secondary admin-small-btn" href="/admin/catalog-print.php" target="_blank" rel="noopener">PDF каталог</a>
+            <a class="btn btn-secondary admin-small-btn" href="<?= app_h(app_url('/admin/export-xls.php')) ?>">Скачать Excel</a>
+            <a class="btn btn-secondary admin-small-btn" href="<?= app_h(app_url('/admin/catalog-print.php')) ?>" target="_blank" rel="noopener">PDF каталог</a>
           </div>
         </div>
       </section>
