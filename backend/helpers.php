@@ -85,7 +85,7 @@ function app_format_admin_datetime(?string $value): string
         $date = new DateTimeImmutable($value);
         $date = $date->setTimezone(new DateTimeZone('Europe/Moscow'));
         return $date->format('d.m.Y H:i') . ' (МСК)';
-    } catch (Throwable) {
+    } catch (Throwable $exception) {
         return $value;
     }
 }
